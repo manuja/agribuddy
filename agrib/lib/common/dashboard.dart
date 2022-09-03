@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:agrib/updateme/updatelist.dart';
+import 'package:agrib/bestfit/searchbest.dart';
 
 class MyGridScreen extends StatefulWidget {
   MyGridScreen({Key key}) : super(key: key);
@@ -26,7 +27,7 @@ class _MyGridScreenState extends State<MyGridScreen> {
             children: <Widget>[
               InkWell(
                 onTap: () {Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => new AlertList()));}, // Handle your callback
+                    new MaterialPageRoute(builder: (context) => new SearchBest()));}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(

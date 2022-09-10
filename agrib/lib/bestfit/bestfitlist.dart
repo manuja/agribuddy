@@ -1,19 +1,18 @@
 import 'dart:async';
-import 'package:agrib/knowledgeup/knowledgeup.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:sqflite/sqflite.dart';
 
-class UpdateList extends StatefulWidget {
+class BestFitList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return UpdateListState();
+    return BestFitListState();
   }
 }
 
-class UpdateListState extends State<UpdateList> {
+class BestFitListState extends State<BestFitList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<BestFit> todoList;
   int count = 0;
@@ -27,7 +26,7 @@ class UpdateListState extends State<UpdateList> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Knowledge Up List'),
+        title: Text('Best Fit List'),
       ),
       body: getTodoListView(),
       bottomNavigationBar: BottomAppBar(
@@ -111,14 +110,14 @@ class UpdateListState extends State<UpdateList> {
     //bool result=false;
     debugPrint("xddxxy"+todo.id.toString());
     //if (todo.id != null) {
-    print("aaaa");
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return KnowledgeUp(todo, "aaaaaa");
-    }));
+      print("aaaa");
+      bool result =
+      await Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return SearchBest(todo, "aaaaaa");
+      }));
 
     //}else{
-    print("aass");
+      print("aass");
     //}
 
 

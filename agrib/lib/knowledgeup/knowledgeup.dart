@@ -4,22 +4,22 @@ import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:intl/intl.dart';
 
-class SearchBest extends StatefulWidget {
+class KnowledgeUp extends StatefulWidget {
 
   final String appBarTitle;
   final BestFit todo;
 
-  SearchBest(this.todo, this.appBarTitle);
+  KnowledgeUp(this.todo, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return TodoDetailState(this.todo, this.appBarTitle);
+    return KnowledgeUpDetailState(this.todo, this.appBarTitle);
   }
 
 }
 
-class TodoDetailState extends State<SearchBest> {
+class KnowledgeUpDetailState extends State<KnowledgeUp> {
 
   DatabaseHelper helper = DatabaseHelper();
 
@@ -31,7 +31,7 @@ class TodoDetailState extends State<SearchBest> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController prioController = TextEditingController();
 
-  TodoDetailState(this.todo, this.appBarTitle);
+  KnowledgeUpDetailState(this.todo, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +40,9 @@ class TodoDetailState extends State<SearchBest> {
         .textTheme
         .title;
 
-      titleController.text = todo.title;
-      descriptionController.text = todo.description;
-      prioController.text = todo.priority.toString();
+    titleController.text = todo.title;
+    descriptionController.text = todo.description;
+    prioController.text = todo.priority.toString();
 
     var items = [
       'Item 1',
@@ -76,33 +76,33 @@ class TodoDetailState extends State<SearchBest> {
             child: ListView(
               children: <Widget>[
 
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: DropdownButton(
-
-                    // Initial Value
-                    value: dropdownvalue,
-                    // Down Arrow Icon
-                    icon: const Icon(Icons.keyboard_arrow_down),
-
-                    // Array list of items
-                    items: items.map((String items) {
-                      return DropdownMenuItem(
-                        value: items,
-                        child: Text(items),
-                      );
-                    }).toList(),
-                    // After selecting the desired option,it will
-                    // change button value to selected value
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownvalue = newValue;
-                        todo.description=dropdownvalue.toString();
-                        print(dropdownvalue);
-                      });
-                    },
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //   child: DropdownButton(
+                //
+                //     // Initial Value
+                //     value: dropdownvalue,
+                //     // Down Arrow Icon
+                //     icon: const Icon(Icons.keyboard_arrow_down),
+                //
+                //     // Array list of items
+                //     items: items.map((String items) {
+                //       return DropdownMenuItem(
+                //         value: items,
+                //         child: Text(items),
+                //       );
+                //     }).toList(),
+                //     // After selecting the desired option,it will
+                //     // change button value to selected value
+                //     onChanged: (String newValue) {
+                //       setState(() {
+                //         dropdownvalue = newValue;
+                //         todo.description=dropdownvalue.toString();
+                //         print(dropdownvalue);
+                //       });
+                //     },
+                //   ),
+                // ),
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
@@ -113,7 +113,7 @@ class TodoDetailState extends State<SearchBest> {
                       updateTitle();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Temperature',
+                        labelText: 'Search',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0)
@@ -122,24 +122,6 @@ class TodoDetailState extends State<SearchBest> {
                   ),
                 ),
 
-                // Padding(
-                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                //   child: TextField(
-                //     controller: prioController,
-                //     style: textStyle,
-                //     onChanged: (value) {
-                //       debugPrint('Something changed in Priority Text Field');
-                //       updatePriority();
-                //     },
-                //     decoration: InputDecoration(
-                //         labelText: 'Rough Cost',
-                //         labelStyle: textStyle,
-                //         border: OutlineInputBorder(
-                //             borderRadius: BorderRadius.circular(5.0)
-                //         )
-                //     ),
-                //   ),
-                // ),
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),

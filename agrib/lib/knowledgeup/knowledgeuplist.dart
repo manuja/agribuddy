@@ -6,14 +6,14 @@ import 'package:agrib/common/database_helper.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:sqflite/sqflite.dart';
 
-class UpdateList extends StatefulWidget {
+class KnowledgeupList extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return UpdateListState();
+    return KnowledgeupListState();
   }
 }
 
-class UpdateListState extends State<UpdateList> {
+class KnowledgeupListState extends State<KnowledgeupList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<BestFit> todoList;
   int count = 0;

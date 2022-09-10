@@ -1,7 +1,9 @@
+import 'package:agrib/helpme/helpme.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/updateme/updatelist.dart';
 import 'package:agrib/bestfit/searchbest.dart';
-
+import 'package:agrib/bestfit/bestfitlist.dart';
+import 'package:agrib/knowledgeup/knowledgeuplist.dart';
 class MyGridScreen extends StatefulWidget {
   MyGridScreen({Key key}) : super(key: key);
 
@@ -27,7 +29,7 @@ class _MyGridScreenState extends State<MyGridScreen> {
             children: <Widget>[
               InkWell(
                 onTap: () {Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => new SearchBest()));}, // Handle your callback
+                    new MaterialPageRoute(builder: (context) => new BestFitList()));}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -56,7 +58,8 @@ class _MyGridScreenState extends State<MyGridScreen> {
               ),
               InkWell(
 
-                onTap: () {}, // Handle your callback
+                onTap: () {Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => new KnowledgeupList()));}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -84,7 +87,8 @@ class _MyGridScreenState extends State<MyGridScreen> {
                 ),
               ),
               InkWell(
-                onTap: () {}, // Handle your callback
+                onTap: () {Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => new UpdateList()));}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -113,7 +117,8 @@ class _MyGridScreenState extends State<MyGridScreen> {
                 ),
               ),
               InkWell(
-                onTap: () {}, // Handle your callback
+                onTap: () {Navigator.push(context,
+                    new MaterialPageRoute(builder: (context) => new HelpMeScreen()));}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(

@@ -1,37 +1,37 @@
 import 'dart:async';
+import 'package:agrib/updateme/updateme.dart';
 import 'package:flutter/material.dart';
-import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:intl/intl.dart';
 
-class SearchBest extends StatefulWidget {
+class UpdateBest extends StatefulWidget {
 
   final String appBarTitle;
-  final BestFit todo;
+  final UpdateMe todoupdate;
 
-  SearchBest(this.todo, this.appBarTitle);
+  UpdateBest(this.todoupdate, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return TodoDetailState(this.todo, this.appBarTitle);
+    return UpdateDetailState(this.todoupdate, this.appBarTitle);
   }
 
 }
 
-class TodoDetailState extends State<SearchBest> {
+class UpdateDetailState extends State<UpdateBest> {
 
   DatabaseHelper helper = DatabaseHelper();
 
   String appBarTitle;
-  BestFit todo;
+  UpdateMe todoupdate;
   String dropdownvalue = 'Item 1';
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController prioController = TextEditingController();
 
-  TodoDetailState(this.todo, this.appBarTitle);
+  UpdateDetailState(this.todoupdate, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -40,17 +40,17 @@ class TodoDetailState extends State<SearchBest> {
         .textTheme
         .title;
 
-      titleController.text = todo.title;
-      descriptionController.text = todo.description;
-      prioController.text = todo.priority.toString();
+    titleController.text = todoupdate.title;
+    descriptionController.text = todoupdate.description;
+    //prioController.text = todoupdate.priority.toString();
 
-    // var items = [
-    //   'Item 1',
-    //   'Item 2',
-    //   'Item 3',
-    //   'Item 4',
-    //   'Item 5',
-    // ];
+    var items = [
+      'Item 1',
+      'Item 2',
+      'Item 3',
+      'Item 4',
+      'Item 5',
+    ];
 
 
 
@@ -97,7 +97,7 @@ class TodoDetailState extends State<SearchBest> {
                 //     onChanged: (String newValue) {
                 //       setState(() {
                 //         dropdownvalue = newValue;
-                //         todo.description=dropdownvalue.toString();
+                //         todoupdate.description=dropdownvalue.toString();
                 //         print(dropdownvalue);
                 //       });
                 //     },
@@ -113,7 +113,7 @@ class TodoDetailState extends State<SearchBest> {
                       updateTitle();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Temperature',
+                        labelText: 'Title',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0)
@@ -128,7 +128,7 @@ class TodoDetailState extends State<SearchBest> {
                     style: textStyle,
                     onChanged: (value) {
                       debugPrint('Something changed in Description Text Field');
-                      //updateDescription();
+                      updateDescription();
                     },
                     decoration: InputDecoration(
                         labelText: 'Description',
@@ -140,24 +140,25 @@ class TodoDetailState extends State<SearchBest> {
                   ),
                 ),
 
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: prioController,
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in Priority Text Field');
-                      updatePriority();
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Rough Cost',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
-                  ),
-                ),
+
+                // Padding(
+                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //   child: TextField(
+                //     controller: prioController,
+                //     style: textStyle,
+                //     onChanged: (value) {
+                //       debugPrint('Something changed in Priority Text Field');
+                //       updatePriority();
+                //     },
+                //     decoration: InputDecoration(
+                //         labelText: 'Rough Cost',
+                //         labelStyle: textStyle,
+                //         border: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(5.0)
+                //         )
+                //     ),
+                //   ),
+                // ),
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -217,30 +218,30 @@ class TodoDetailState extends State<SearchBest> {
 
   // Update the title of todo object
   void updateTitle(){
-    todo.title = titleController.text;
+    todoupdate.title = titleController.text;
   }
 
   // Update the description of todo object
   void updateDescription() {
-    todo.description = descriptionController.text;
+    todoupdate.description = descriptionController.text;
   }
 
   //Update the priority
-  void updatePriority(){
-    todo.priority=int.parse(prioController.text);
-  }
+  // void updatePriority(){
+  //   todoupdate.priority=int.parse(prioController.text);
+  // }
 
   // Save data to database
   void _save() async {
 
     moveToLastScreen();
 
-    todo.date = DateFormat.yMMMd().format(DateTime.now());
+    todoupdate.date = DateFormat.yMMMd().format(DateTime.now());
     int result;
-    if (todo.id != null) {  // Case 1: Update operation
-      result = await helper.updateTodo(todo);
+    if (todoupdate.id != null) {  // Case 1: Update operation
+      result = await helper.updateTodoUpdate(todoupdate);
     } else { // Case 2: Insert Operation
-      result = await helper.insertTodo(todo);
+      result = await helper.insertTodoUpdate(todoupdate);
     }
 
     if (result != 0) {  // Success
@@ -256,12 +257,12 @@ class TodoDetailState extends State<SearchBest> {
 
     moveToLastScreen();
 
-    if (todo.id == null) {
+    if (todoupdate.id == null) {
       _showAlertDialog('Status', 'No Todo was deleted');
       return;
     }
 
-    int result = await helper.deleteTodo(todo.id);
+    int result = await helper.deleteTodoUpdate(todoupdate.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Fair item Deleted Successfully');
     } else {

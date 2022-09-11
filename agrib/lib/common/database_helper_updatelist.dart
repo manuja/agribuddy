@@ -3,38 +3,38 @@ import 'package:sqflite/sqflite.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/updateme/updateme.dart';
 
-class DatabaseHelper {
+class DatabaseHelperUpdateListRemove {
 
-  static DatabaseHelper _databaseHelper;    // Singleton DatabaseHelper
-  static Database _database;                // Singleton Database
+  static DatabaseHelperUpdateListRemove _databaseHelperUpdateList;    // Singleton DatabaseHelper
+  static Database _databaseupdate;                // Singleton Database
 
-  String todoTable = 'todo_table';
   String updatemeTable = 'updateme_table';
   String colId = 'id';
   String colTitle = 'title';
   String colDescription = 'description';
   String colDate = 'date';
   String colPriority = 'priority';
+  String todoTable = 'todo_table';
+  //String colPriority = 'priority';
 
-  DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
+  DatabaseHelperUpdateListRemove._createInstance(); // Named constructor to create instance of DatabaseHelper
 
-  factory DatabaseHelper() {
+  factory DatabaseHelperUpdateListRemove() {
 
-    if (_databaseHelper == null) {
-      _databaseHelper = DatabaseHelper._createInstance(); // This is executed only once, singleton object
+    if (_databaseHelperUpdateList == null) {
+      _databaseHelperUpdateList = DatabaseHelperUpdateListRemove._createInstance(); // This is executed only once, singleton object
     }
-    return _databaseHelper;
+    return _databaseHelperUpdateList;
   }
 
   Future<Database> get database async {
 
-    if (_database == null) {
-      _database = await initializeDatabase();
+    if (_databaseupdate == null) {
+      _databaseupdate = await initializeDatabase();
     }
-    return _database;
+    return _databaseupdate;
   }
 
   Future<Database> initializeDatabase() async {
@@ -50,19 +50,11 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
 
-    await db.execute('CREATE TABLE $todoTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
-        '$colDescription TEXT, $colDate TEXT, $colPriority INTEGER)');
     await db.execute('CREATE TABLE $updatemeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
         '$colDescription TEXT, $colDate TEXT)');
-  }
+    await db.execute('CREATE TABLE $todoTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
+        '$colDescription TEXT, $colDate TEXT, $colPriority INTEGER)');
 
-  // Fetch Operation: Get all todo objects from database
-  Future<List<Map<String, dynamic>>> getTodoMapList() async {
-    Database db = await this.database;
-
-//		var result = await db.rawQuery('SELECT * FROM $todoTable order by $colTitle ASC');
-    var result = await db.query(todoTable, orderBy: '$colTitle ASC');
-    return result;
   }
 
   // Fetch Operation: Get all todo objects from database
@@ -75,17 +67,7 @@ class DatabaseHelper {
   }
 
   // Insert Operation: Insert a todo object to database
-  Future<int> insertTodo(BestFit todo) async {
-    Database db = await this.database;
-    debugPrint("hai"+todo.priority.toString());
-    debugPrint("hai2"+todo.title.toString());
-    debugPrint("hai9"+todo.description.toString());
-    var result = await db.insert(todoTable, todo.toMap());
-    debugPrint("haires "+result.toString());
-    return result;
-  }
-  // Insert Operation: Insert a todo object to database
-  Future<int> insertTodoUpdate(UpdateMe todoupdate) async {
+  Future<int> insertTodo(UpdateMe todoupdate) async {
     Database db = await this.database;
     //debugPrint("hai"+todoupdate.priority.toString());
     debugPrint("hai2"+todoupdate.title.toString());
@@ -97,14 +79,7 @@ class DatabaseHelper {
   }
 
   // Update Operation: Update a todo object and save it to database
-  Future<int> updateTodo(BestFit todo) async {
-    var db = await this.database;
-    var result = await db.update(todoTable, todo.toMap(), where: '$colId = ?', whereArgs: [todo.id]);
-    return result;
-  }
-
-  // Update Operation: Update a todo object and save it to database
-  Future<int> updateTodoUpdate(UpdateMe todoupdate) async {
+  Future<int> updateTodo(UpdateMe todoupdate) async {
     var db = await this.database;
     var result = await db.update(updatemeTable, todoupdate.toMap(), where: '$colId = ?', whereArgs: [todoupdate.id]);
     return result;
@@ -114,28 +89,12 @@ class DatabaseHelper {
   // Delete Operation: Delete a todo object from database
   Future<int> deleteTodo(int id) async {
     var db = await this.database;
-    int result = await db.rawDelete('DELETE FROM $todoTable WHERE $colId = $id');
-    return result;
-  }
-
-  // Delete Operation: Delete a todo object from database
-  Future<int> deleteTodoUpdate(int id) async {
-    var db = await this.database;
     int result = await db.rawDelete('DELETE FROM $updatemeTable WHERE $colId = $id');
     return result;
   }
 
   // Get number of todo objects in database
   Future<int> getCount() async {
-    Database db = await this.database;
-    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $todoTable');
-    int result = Sqflite.firstIntValue(x);
-    debugPrint("count here is "+result.toString());
-    return result;
-  }
-
-  // Get number of todo objects in database
-  Future<int> getCountUpdate() async {
     Database db = await this.database;
     List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT (*) from $updatemeTable');
     int result = Sqflite.firstIntValue(x);
@@ -144,21 +103,7 @@ class DatabaseHelper {
   }
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'todo List' [ List<Todo> ]
-  Future<List<BestFit>> getTodoList() async {
-
-    var todoMapList = await getTodoMapList(); // Get 'Map List' from database
-    int count = todoMapList.length;         // Count the number of map entries in db table
-
-    List<BestFit> todoList = List<BestFit>();
-    // For loop to create a 'todo List' from a 'Map List'
-    for (int i = 0; i < count; i++) {
-      todoList.add(BestFit.fromMapObject(todoMapList[i]));
-    }
-
-    return todoList;
-  }
-  // Get the 'Map List' [ List<Map> ] and convert it to 'todo List' [ List<Todo> ]
-  Future<List<UpdateMe>> getTodoListUpdate() async {
+  Future<List<UpdateMe>> getTodoList() async {
 
     var updatemeMapList = await getUpdateMeMapList(); // Get 'Map List' from database
     int count = updatemeMapList.length;         // Count the number of map entries in db table

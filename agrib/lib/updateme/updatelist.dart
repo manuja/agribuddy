@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:agrib/knowledgeup/knowledgeup.dart';
 import 'package:flutter/material.dart';
-import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
-import 'package:agrib/bestfit/searchbest.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:agrib/updateme/updatebest.dart';
+import 'package:agrib/updateme/updateme.dart';
 
 class UpdateList extends StatefulWidget {
   @override
@@ -15,21 +15,21 @@ class UpdateList extends StatefulWidget {
 
 class UpdateListState extends State<UpdateList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
-  List<BestFit> todoList;
+  List<UpdateMe> updateList;
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (todoList == null) {
-      todoList = List<BestFit>();
+    if (updateList == null) {
+      updateList = List<UpdateMe>();
       updateListView();
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Knowledge Up List'),
+        title: Text('Alert'),
       ),
-      body: getTodoListView(),
+      body: getUpdateListView(),
       bottomNavigationBar: BottomAppBar(
         shape: const CircularNotchedRectangle(),
         child: Container(height: 50.0),
@@ -37,7 +37,7 @@ class UpdateListState extends State<UpdateList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
-          navigateToDetail(BestFit('', '', '', 0), 'Add My Fair');
+          navigateToDetail(UpdateMe('', '',''), 'Add My Fair');
         },
         tooltip: 'Add My Fair',
         child: Icon(Icons.add),
@@ -46,43 +46,44 @@ class UpdateListState extends State<UpdateList> {
     );
   }
 
-  ListView getTodoListView() {
+  ListView getUpdateListView() {
     debugPrint("mmmmmmmmmmmmmmmmm"+count.toString());
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
-        debugPrint("xxxy p"+this.todoList[position].toString());
-        debugPrint("xxxy id"+this.todoList[position].id.toString());
-        debugPrint("xxxy ti"+this.todoList[position].title.toString());
-        debugPrint("xxxy des"+this.todoList[position].description.toString());
-        debugPrint("xxxy des2"+this.todoList[position].priority.toString());
+         //debugPrint("xxxy p"+this.updateList[position].toString());
+         debugPrint("xxxy id"+this.updateList[position].id.toString());
+         debugPrint("xxxy ti"+this.updateList[position].title.toString());
+        debugPrint("xxxy desi"+this.updateList[position].description.toString());
+        // debugPrint("xxxy des2"+this.todoList[position].priority.toString());
         return Card(
           color: Colors.white,
           elevation: 2.0,
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: Colors.amber,
-              child: Text(this.todoList[position].title.toString(),
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-            ),
-            title: Text(this.todoList[position].description.toString()+" - ",
+             leading: CircleAvatar(
+               backgroundColor: Colors.amber,
+               child: Text(this.updateList[position].title.toString(),
+            // // Text("abc",
+               style: TextStyle(fontWeight: FontWeight.bold)),
+             ),
+            title: Text(this.updateList[position].description.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text((this.todoList[position].priority.toString()).toString()+' LKR'),
-            //subtitle: Text(this.todoList[position].description),
+            //subtitle: Text((this.updateList[position].date.toString()).toString()+' LKR'),
+            subtitle: Text(this.updateList[position].description,style: TextStyle(fontWeight: FontWeight.bold)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
                   child: Icon(Icons.delete,color: Colors.red,),
                   onTap: () {
-                    _delete(context, todoList[position]);
+                  //  _delete(context, updateList[position]);
                   },
                 ),
               ],
             ),
             onTap: () {
               debugPrint("ListTile Tapped");
-              navigateToDetail(this.todoList[position], 'Edit My Fair');
+              navigateToDetail(this.updateList[position], 'Edit My Fair');
             },
           ),
         );
@@ -94,8 +95,8 @@ class UpdateListState extends State<UpdateList> {
     return title.substring(0, 2);
   }
 
-  void _delete(BuildContext context, BestFit todo) async {
-    int result = await databaseHelper.deleteTodo(todo.id);
+  void _delete(BuildContext context, UpdateMe todoupdate) async {
+    int result = await databaseHelper.deleteTodoUpdate(todoupdate.id);
     if (result != 0) {
       _showSnackBar(context, 'My Fair Deleted Successfully');
       updateListView();
@@ -107,14 +108,14 @@ class UpdateListState extends State<UpdateList> {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  void navigateToDetail(BestFit todo, String title) async {
+  void navigateToDetail(UpdateMe todoupdate, String title) async {
     //bool result=false;
-    debugPrint("xddxxy"+todo.id.toString());
+    debugPrint("xddxxy"+todoupdate.id.toString());
     //if (todo.id != null) {
     print("aaaa");
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return KnowledgeUp(todo, "aaaaaa");
+      return UpdateBest(todoupdate, "aaaaaa");
     }));
 
     //}else{
@@ -130,10 +131,10 @@ class UpdateListState extends State<UpdateList> {
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<BestFit>> todoListFuture = databaseHelper.getTodoList();
+      Future<List<UpdateMe>> todoListFuture = databaseHelper.getTodoListUpdate();
       todoListFuture.then((todoList) {
         setState(() {
-          this.todoList = todoList;
+          this.updateList = todoList;
           debugPrint("rrrr"+todoList.length.toString());
           this.count = todoList.length;
         });

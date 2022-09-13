@@ -1,11 +1,16 @@
 import 'package:agrib/helpme/helpme.dart';
+import 'package:agrib/knowledgeup/knowledge.dart';
+import 'package:agrib/knowledgeup/knowledgeup.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/updateme/updatelist.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:agrib/bestfit/bestfitlist.dart';
 import 'package:agrib/knowledgeup/knowledgeuplist.dart';
 class MyGridScreen extends StatefulWidget {
+
   MyGridScreen({Key key}) : super(key: key);
+
+  //Knowledge todoknowledge;
 
   @override
   _MyGridScreenState createState() => _MyGridScreenState();
@@ -58,7 +63,8 @@ class _MyGridScreenState extends State<MyGridScreen> {
               ),
               InkWell(
 
-                onTap: () {Navigator.push(context,
+                onTap: () {Knowledge todoknowledge;
+Navigator.push(context,
                     new MaterialPageRoute(builder: (context) => new KnowledgeupList()));}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),

@@ -7,23 +7,39 @@ import 'package:agrib/common/database_helper.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:sqflite/sqflite.dart';
 
-class KnowledgeupList extends StatefulWidget {
+class KnowledgeupListSearch extends StatefulWidget {
+
+  final String appBarTitle;
+  final Knowledge todoknowledge;
+
+  KnowledgeupListSearch(this.todoknowledge, this.appBarTitle);
+
+
   @override
   State<StatefulWidget> createState() {
-    return KnowledgeupListState();
+    return KnowledgeupListSearchState(this.todoknowledge, this.appBarTitle);
   }
 }
 
-class KnowledgeupListState extends State<KnowledgeupList> {
+class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
+
+
+  //print("serious"+knowledgeList[0].);
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<Knowledge> knowledgeList;
+  Knowledge todoknowledge;
+  String appBarTitle;
   int count = 0;
+
+  KnowledgeupListSearchState(this.todoknowledge, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
     if (knowledgeList == null) {
       knowledgeList = List<Knowledge>();
-      getListView();
+      print("laaaaaawata"+todoknowledge.title);
+     // getListView(knowledgeList[0].title);
+      getListView(todoknowledge.title);
     }
 
     return Scaffold(
@@ -37,7 +53,7 @@ class KnowledgeupListState extends State<KnowledgeupList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         // debugPrint('FAB clicked');
+          // debugPrint('FAB clicked');
           navigateToDetail(Knowledge('', '', '', ''), 'Add My Fair');
         },
         tooltip: 'Add My Fair',
@@ -56,7 +72,7 @@ class KnowledgeupListState extends State<KnowledgeupList> {
         debugPrint("xxxy id"+this.knowledgeList[position].id.toString());
         debugPrint("xxxy ti"+this.knowledgeList[position].title.toString());
         debugPrint("xxxy des"+this.knowledgeList[position].description.toString());
-       // debugPrint("xxxy des2"+this.todoList[position].priority.toString());
+        // debugPrint("xxxy des2"+this.todoList[position].priority.toString());
         return Card(
           color: Colors.white,
           elevation: 2.0,
@@ -76,7 +92,7 @@ class KnowledgeupListState extends State<KnowledgeupList> {
                 GestureDetector(
                   child: Icon(Icons.delete,color: Colors.red,),
                   onTap: () {
-                   // _delete(context, todoList[position]);
+                    // _delete(context, todoList[position]);
                   },
                 ),
               ],
@@ -142,11 +158,11 @@ class KnowledgeupListState extends State<KnowledgeupList> {
     });
   }
 
-  void getListView() {
+  void getListView(String keyword) {
     print("here it.....................");
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Knowledge>> todoListFuture = databaseHelper.getTodoListKnowledge();
+      Future<List<Knowledge>> todoListFuture = databaseHelper.getTodoListKnowledgeSearch(keyword);
       todoListFuture.then((todoList) {
         setState(() {
           this.knowledgeList = todoList;

@@ -1,20 +1,24 @@
 import 'dart:async';
+import 'package:agrib/knowledgeup/knowledge.dart';
+import 'package:agrib/knowledgeup/knowledgeuplistsearch.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:intl/intl.dart';
 
+import 'knowledgeuplist.dart';
+
 class KnowledgeUp extends StatefulWidget {
 
   final String appBarTitle;
-  final BestFit todo;
+  final Knowledge todoknowledge;
 
-  KnowledgeUp(this.todo, this.appBarTitle);
+  KnowledgeUp(this.todoknowledge, this.appBarTitle);
 
   @override
   State<StatefulWidget> createState() {
 
-    return KnowledgeUpDetailState(this.todo, this.appBarTitle);
+    return KnowledgeUpDetailState(this.todoknowledge, this.appBarTitle);
   }
 
 }
@@ -24,14 +28,14 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
   DatabaseHelper helper = DatabaseHelper();
 
   String appBarTitle;
-  BestFit todo;
+  Knowledge todoknowledge;
   String dropdownvalue = 'Item 1';
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController prioController = TextEditingController();
+  TextEditingController autherController = TextEditingController();
 
-  KnowledgeUpDetailState(this.todo, this.appBarTitle);
+  KnowledgeUpDetailState(this.todoknowledge, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +44,9 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
         .textTheme
         .title;
 
-    titleController.text = todo.title;
-    descriptionController.text = todo.description;
-    prioController.text = todo.priority.toString();
+    titleController.text = todoknowledge.title;
+    descriptionController.text = todoknowledge.description;
+    autherController.text = todoknowledge.author;
 
     var items = [
       'Item 1',
@@ -75,7 +79,60 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
             padding: EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
             child: ListView(
               children: <Widget>[
-
+                // Padding(
+                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //   child: TextField(
+                //     controller: titleController,
+                //     style: textStyle,
+                //     onChanged: (value) {
+                //       debugPrint('Something changed in Title Text Field');
+                //       updateTitle();
+                //     },
+                //     decoration: InputDecoration(
+                //         labelText: 'Title',
+                //         labelStyle: textStyle,
+                //         border: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(5.0)
+                //         )
+                //     ),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //   child: TextField(
+                //     controller: descriptionController,
+                //     style: textStyle,
+                //     onChanged: (value) {
+                //       debugPrint('Something changed in Description Text Field');
+                //       updateDescription();
+                //     },
+                //     decoration: InputDecoration(
+                //         labelText: 'Description',
+                //         labelStyle: textStyle,
+                //         border: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(5.0)
+                //         )
+                //     ),
+                //   ),
+                // ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //   child: TextField(
+                //     controller: autherController,
+                //     style: textStyle,
+                //     onChanged: (value) {
+                //       debugPrint('Something changed in Description Text Field');
+                //       updateAuthor();
+                //     },
+                //     decoration: InputDecoration(
+                //         labelText: 'Author',
+                //         labelStyle: textStyle,
+                //         border: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(5.0)
+                //         )
+                //     ),
+                //   ),
+                // ),
                 // Padding(
                 //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                 //   child: DropdownButton(
@@ -97,7 +154,7 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
                 //     onChanged: (String newValue) {
                 //       setState(() {
                 //         dropdownvalue = newValue;
-                //         todo.description=dropdownvalue.toString();
+                //         todoknowledge.description=dropdownvalue.toString();
                 //         print(dropdownvalue);
                 //       });
                 //     },
@@ -132,13 +189,14 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
                           color: Theme.of(context).primaryColorDark,
                           textColor: Theme.of(context).primaryColorLight,
                           child: Text(
-                            'Save',
+                            'Search',
                             textScaleFactor: 1.5,
                           ),
                           onPressed: () {
                             setState(() {
                               debugPrint("Save button clicked");
-                              _save();
+                              //_save();
+                              _search();
                             });
                           },
                         ),
@@ -146,22 +204,22 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
 
                       Container(width: 5.0,),
 
-                      Expanded(
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Delete',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              debugPrint("Delete button clicked");
-                              _delete();
-                            });
-                          },
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: RaisedButton(
+                      //     color: Theme.of(context).primaryColorDark,
+                      //     textColor: Theme.of(context).primaryColorLight,
+                      //     child: Text(
+                      //       'Delete',
+                      //       textScaleFactor: 1.5,
+                      //     ),
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         debugPrint("Delete button clicked");
+                      //         _delete();
+                      //       });
+                      //     },
+                      //   ),
+                      // ),
 
                     ],
                   ),
@@ -181,30 +239,35 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
 
   // Update the title of todo object
   void updateTitle(){
-    todo.title = titleController.text;
+    todoknowledge.title = titleController.text;
   }
 
   // Update the description of todo object
   void updateDescription() {
-    todo.description = descriptionController.text;
+    todoknowledge.description = descriptionController.text;
+  }
+
+  // Update the title of todo object
+  void updateAuthor(){
+    todoknowledge.author = autherController.text;
   }
 
   //Update the priority
-  void updatePriority(){
-    todo.priority=int.parse(prioController.text);
-  }
+  // void updatePriority(){
+  //   todoknowledge.priority=int.parse(prioController.text);
+  // }
 
   // Save data to database
   void _save() async {
 
     moveToLastScreen();
 
-    todo.date = DateFormat.yMMMd().format(DateTime.now());
+    todoknowledge.date = DateFormat.yMMMd().format(DateTime.now());
     int result;
-    if (todo.id != null) {  // Case 1: Update operation
-      result = await helper.updateTodo(todo);
+    if (todoknowledge.id != null) {  // Case 1: Update operation
+      result = await helper.updateTodoKnowledge(todoknowledge);
     } else { // Case 2: Insert Operation
-      result = await helper.insertTodo(todo);
+      result = await helper.insertTodoKnowledge(todoknowledge);
     }
 
     if (result != 0) {  // Success
@@ -215,17 +278,43 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
 
   }
 
+  void _search() async {
+
+    print("welcome to search"+todoknowledge.title);
+
+    //moveToLastScreen();
+    //bool result=false;
+    //debugPrint("xddxxy"+knowtodo.id.toString());
+    //if (todo.id != null) {
+    print("aaaa");
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return KnowledgeupListSearch(todoknowledge, "aaaaaa");
+    }));
+
+    //}else{
+    print("aass");
+    //}
+
+
+    // if (result == true) {
+    //   updateListView();
+    // }
+
+
+  }
+
 
   void _delete() async {
 
     moveToLastScreen();
 
-    if (todo.id == null) {
+    if (todoknowledge.id == null) {
       _showAlertDialog('Status', 'No Todo was deleted');
       return;
     }
 
-    int result = await helper.deleteTodo(todo.id);
+    int result = await helper.deleteTodoKnowledge(todoknowledge.id);
     if (result != 0) {
       _showAlertDialog('Status', 'Fair item Deleted Successfully');
     } else {

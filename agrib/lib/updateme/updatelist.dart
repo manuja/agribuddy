@@ -61,12 +61,10 @@ class UpdateListState extends State<UpdateList> {
           elevation: 2.0,
           child: ListTile(
              leading: CircleAvatar(
-               backgroundColor: Colors.amber,
-               child: Text(this.updateList[position].title.toString(),
-            // // Text("abc",
-               style: TextStyle(fontWeight: FontWeight.bold)),
+               backgroundColor: Colors.red,
+               child: Icon(Icons.add_alert_outlined,size: 25,color: Colors.black),
              ),
-            title: Text(this.updateList[position].description.toString(),
+            title: Text(this.updateList[position].title.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
             //subtitle: Text((this.updateList[position].date.toString()).toString()+' LKR'),
             subtitle: Text(this.updateList[position].description,style: TextStyle(fontWeight: FontWeight.bold)),
@@ -74,13 +72,14 @@ class UpdateListState extends State<UpdateList> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
-                  child: Icon(Icons.delete,color: Colors.red,),
+                  child: Text((this.updateList[position].date.toString()).toString()),
                   onTap: () {
                   //  _delete(context, updateList[position]);
                   },
                 ),
               ],
             ),
+
             onTap: () {
               debugPrint("ListTile Tapped");
               navigateToDetail(this.updateList[position], 'Edit My Fair');

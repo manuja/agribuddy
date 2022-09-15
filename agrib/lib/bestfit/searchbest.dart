@@ -4,6 +4,8 @@ import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:intl/intl.dart';
 
+import 'bestfitlistsearch.dart';
+
 class SearchBest extends StatefulWidget {
 
   final String appBarTitle;
@@ -25,11 +27,17 @@ class TodoDetailState extends State<SearchBest> {
 
   String appBarTitle;
   BestFit todo;
-  String dropdownvalue = 'Item 1';
+  String mainCrop = 'Food crops';
+  String landScape= 'Hill Country/Mountain';
+  String soilItem = 'Salty';
+  String rainItem = 'High';
 
+
+  TextEditingController cropController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController prioController = TextEditingController();
+  //TextEditingController prioController = TextEditingController();
+
 
   TodoDetailState(this.todo, this.appBarTitle);
 
@@ -40,17 +48,39 @@ class TodoDetailState extends State<SearchBest> {
         .textTheme
         .title;
 
-      titleController.text = todo.title;
+      titleController.text = todo.title.toString();
       descriptionController.text = todo.description;
-      prioController.text = todo.priority.toString();
+      //prioController.text = todo.priority.toString();
+      cropController.text=todo.crop;
+      todo.maincrop=mainCrop.toString();
+      todo.landscape=landScape.toString();
+      todo.soil=soilItem.toString();
+      todo.rain=rainItem.toString();
 
-    // var items = [
-    //   'Item 1',
-    //   'Item 2',
-    //   'Item 3',
-    //   'Item 4',
-    //   'Item 5',
-    // ];
+    var itemsRain = [
+      'High',
+      'Low',
+      'Medium'
+    ];
+    var itemsSoil= [
+      'Salty',
+      'Humas',
+      'Clay'
+    ];
+
+    var items = [
+      'Food crops',
+      'Feed crops',
+      'Oil crops',
+      'Ornamental crops',
+      'Industrial crops',
+    ];
+
+    var itemsLandScape = [
+      'Hill Country/Mountain',
+      'Plain Ground',
+      'Coast',
+    ];
 
 
 
@@ -76,33 +106,132 @@ class TodoDetailState extends State<SearchBest> {
             child: ListView(
               children: <Widget>[
 
-                // Padding(
-                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                //   child: DropdownButton(
-                //
-                //     // Initial Value
-                //     value: dropdownvalue,
-                //     // Down Arrow Icon
-                //     icon: const Icon(Icons.keyboard_arrow_down),
-                //
-                //     // Array list of items
-                //     items: items.map((String items) {
-                //       return DropdownMenuItem(
-                //         value: items,
-                //         child: Text(items),
-                //       );
-                //     }).toList(),
-                //     // After selecting the desired option,it will
-                //     // change button value to selected value
-                //     onChanged: (String newValue) {
-                //       setState(() {
-                //         dropdownvalue = newValue;
-                //         todo.description=dropdownvalue.toString();
-                //         print(dropdownvalue);
-                //       });
-                //     },
-                //   ),
-                // ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: DropdownButton(
+
+                    // Initial Value
+                    value: mainCrop,
+                    // Down Arrow Icon
+                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                    // Array list of items
+                    items: items.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (String newValue) {
+                      setState(() {
+                        mainCrop = newValue;
+                        todo.maincrop=mainCrop.toString();
+
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: DropdownButton(
+
+                    // Initial Value
+                    value: landScape,
+                    // Down Arrow Icon
+                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                    // Array list of items
+                    items: itemsLandScape.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (String newValue) {
+                      setState(() {
+                        landScape = newValue;
+                        todo.landscape=landScape.toString();
+                        print(landScape);
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: DropdownButton(
+
+                    // Initial Value
+                    value: soilItem,
+                    // Down Arrow Icon
+                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                    // Array list of items
+                    items: itemsSoil.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (String newValue) {
+                      setState(() {
+                        soilItem = newValue;
+                         todo.soil=soilItem.toString();
+                        print(soilItem);
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: DropdownButton(
+
+                    // Initial Value
+                    value: rainItem,
+                    // Down Arrow Icon
+                    icon: const Icon(Icons.keyboard_arrow_down),
+
+                    // Array list of items
+                    items: itemsRain.map((String items) {
+                      return DropdownMenuItem(
+                        value: items,
+                        child: Text(items),
+                      );
+                    }).toList(),
+                    // After selecting the desired option,it will
+                    // change button value to selected value
+                    onChanged: (String newValue) {
+                      setState(() {
+                        rainItem = newValue;
+                         todo.rain=rainItem.toString();
+                        print(rainItem);
+                      });
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  child: TextField(
+                    controller: cropController,
+                    style: textStyle,
+                    onChanged: (value) {
+                      debugPrint('Something changed in Title Text Field');
+                      updateCrop();
+                    },
+                    decoration: InputDecoration(
+                        labelText: 'Crop',
+                        labelStyle: textStyle,
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0)
+                        )
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
                   child: TextField(
@@ -128,7 +257,7 @@ class TodoDetailState extends State<SearchBest> {
                     style: textStyle,
                     onChanged: (value) {
                       debugPrint('Something changed in Description Text Field');
-                      //updateDescription();
+                      updateDescription();
                     },
                     decoration: InputDecoration(
                         labelText: 'Description',
@@ -140,24 +269,24 @@ class TodoDetailState extends State<SearchBest> {
                   ),
                 ),
 
-                Padding(
-                  padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                  child: TextField(
-                    controller: prioController,
-                    style: textStyle,
-                    onChanged: (value) {
-                      debugPrint('Something changed in Priority Text Field');
-                      updatePriority();
-                    },
-                    decoration: InputDecoration(
-                        labelText: 'Rough Cost',
-                        labelStyle: textStyle,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0)
-                        )
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+                //   child: TextField(
+                //     controller: prioController,
+                //     style: textStyle,
+                //     onChanged: (value) {
+                //       debugPrint('Something changed in Priority Text Field');
+                //       updatePriority();
+                //     },
+                //     decoration: InputDecoration(
+                //         labelText: 'Rough Cost',
+                //         labelStyle: textStyle,
+                //         border: OutlineInputBorder(
+                //             borderRadius: BorderRadius.circular(5.0)
+                //         )
+                //     ),
+                //   ),
+                // ),
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
@@ -174,7 +303,8 @@ class TodoDetailState extends State<SearchBest> {
                           onPressed: () {
                             setState(() {
                               debugPrint("Save button clicked");
-                              _save();
+                             // _save();
+                              _search();
                             });
                           },
                         ),
@@ -215,9 +345,15 @@ class TodoDetailState extends State<SearchBest> {
     Navigator.pop(context, true);
   }
 
+
+  // Update the title of todo object
+  void updateCrop(){
+    todo.crop = cropController.text;
+  }
+
   // Update the title of todo object
   void updateTitle(){
-    todo.title = titleController.text;
+    todo.title = int.parse(titleController.text);
   }
 
   // Update the description of todo object
@@ -227,15 +363,24 @@ class TodoDetailState extends State<SearchBest> {
 
   //Update the priority
   void updatePriority(){
-    todo.priority=int.parse(prioController.text);
+    //todo.priority=int.parse(prioController.text);
   }
 
   // Save data to database
   void _save() async {
 
-    moveToLastScreen();
+    print("hiiiiiii all");
+    print(todo.maincrop);
+    print(todo.landscape);
+    print(todo.soil);
+    print(todo.rain);
+    print(todo.crop);
+    print(todo.title);
+    print(todo.description);
+    //moveToLastScreen();
 
-    todo.date = DateFormat.yMMMd().format(DateTime.now());
+   //todo.date = DateFormat.yMMMd().format(DateTime.now());
+    //todo.title=int.parse(todo.title);
     int result;
     if (todo.id != null) {  // Case 1: Update operation
       result = await helper.updateTodo(todo);
@@ -248,6 +393,56 @@ class TodoDetailState extends State<SearchBest> {
     } else {  // Failure
       _showAlertDialog('Status', 'Problem Saving Todo');
     }
+
+  }
+
+  // Save data to database
+  void _search() async {
+
+    print("welcome to search"+todo.title.toString());
+
+    //moveToLastScreen();
+    //bool result=false;
+    //debugPrint("xddxxy"+knowtodo.id.toString());
+    //if (todo.id != null) {
+    print("aaaa");
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return BestFitListSearch(todo, "aaaaaa");
+    }));
+
+    //}else{
+    print("aass");
+    //}
+
+
+    // if (result == true) {
+    //   updateListView();
+    // }
+
+    print("hiiiiiii all");
+    print(todo.maincrop);
+    print(todo.landscape);
+    print(todo.soil);
+    print(todo.rain);
+    print(todo.crop);
+    print(todo.title);
+    print(todo.description);
+    //moveToLastScreen();
+
+    //todo.date = DateFormat.yMMMd().format(DateTime.now());
+    // int result;
+    // if (todo.id != null) {  // Case 1: Update operation
+    //   result = await helper.updateTodo(todo);
+    // } else { // Case 2: Insert Operation
+    //   result = await helper.insertTodo(todo);
+    // }
+    //
+    // if (result != 0) {  // Success
+    //   _showAlertDialog('Status', 'Fair item Saved Successfully');
+    // } else {  // Failure
+    //   _showAlertDialog('Status', 'Problem Saving Todo');
+    // }
 
   }
 

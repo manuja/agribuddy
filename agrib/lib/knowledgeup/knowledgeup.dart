@@ -195,8 +195,8 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
                           onPressed: () {
                             setState(() {
                               debugPrint("Save button clicked");
-                              //_save();
-                              _search();
+                             // _save();
+                             _search();
                             });
                           },
                         ),

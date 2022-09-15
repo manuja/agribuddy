@@ -44,7 +44,7 @@ class _MyGridScreenState extends State<MyGridScreen> {
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.thumb_up_outlined,size: 60,color: Colors.lightGreen),
+                        Icon(Icons.arrow_circle_up_outlined,size: 60,color: Colors.lightGreen),
                         SizedBox(height: 8),
                         Center(
                           child: Text(
@@ -154,6 +154,19 @@ Navigator.push(context,
 
             ],
           )),
+      bottomNavigationBar: new BottomAppBar(
+
+        child: Text(
+          'Agricultural App - @Ujitha Sudasingha -2022',
+          style: TextStyle(
+            fontSize: 14.0,
+            fontWeight: FontWeight.bold,
+            color: Colors.black26,
+
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

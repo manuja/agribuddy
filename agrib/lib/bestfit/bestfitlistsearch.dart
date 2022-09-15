@@ -5,23 +5,34 @@ import 'package:agrib/common/database_helper.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:sqflite/sqflite.dart';
 
-class BestFitList extends StatefulWidget {
+class BestFitListSearch extends StatefulWidget {
+
+  final String appBarTitle;
+  final BestFit todo;
+
+  BestFitListSearch(this.todo, this.appBarTitle);
+
   @override
   State<StatefulWidget> createState() {
-    return BestFitListState();
+    return BestFitListSearchState(this.todo, this.appBarTitle);
   }
 }
 
-class BestFitListState extends State<BestFitList> {
+class BestFitListSearchState extends State<BestFitListSearch> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<BestFit> todoList;
+  BestFit todo;
+  String appBarTitle;
   int count = 0;
+
+  BestFitListSearchState(this.todo, this.appBarTitle);
 
   @override
   Widget build(BuildContext context) {
     if (todoList == null) {
       todoList = List<BestFit>();
-      updateListView();
+      //updateListView();
+      getListView(todo);
     }
 
     return Scaffold(
@@ -66,7 +77,7 @@ class BestFitListState extends State<BestFitList> {
             ),
             title: Text(this.todoList[position].description.toString()+" - ",
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text((this.todoList[position].rain.toString()).toString()+' LKR'),
+            subtitle: Text((this.todoList[position].rain.toString()).toString()+' mmmm'),
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -110,14 +121,14 @@ class BestFitListState extends State<BestFitList> {
     //bool result=false;
     debugPrint("xddxxy"+todo.id.toString());
     //if (todo.id != null) {
-      print("aaaa");
-      bool result =
-      await Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return SearchBest(todo, "aaaaaa");
-      }));
+    print("aaaa");
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return SearchBest(todo, "aaaaaa");
+    }));
 
     //}else{
-      print("aass");
+    print("aass");
     //}
 
 
@@ -130,6 +141,21 @@ class BestFitListState extends State<BestFitList> {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
       Future<List<BestFit>> todoListFuture = databaseHelper.getTodoList();
+      todoListFuture.then((todoList) {
+        setState(() {
+          this.todoList = todoList;
+          debugPrint("rrrr"+todoList.length.toString());
+          this.count = todoList.length;
+        });
+      });
+    });
+  }
+
+  void getListView(BestFit todo) {
+    print("here it.....................");
+    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+    dbFuture.then((database) {
+      Future<List<BestFit>> todoListFuture = databaseHelper.getTodoListSearch(todo);
       todoListFuture.then((todoList) {
         setState(() {
           this.todoList = todoList;

@@ -22,6 +22,13 @@ class DatabaseHelper {
   String colPriority = 'priority';
   String colAuthor= 'author';
 
+  String colMainCrop = 'maincrop';
+  String colLandscape = 'landscape';
+  String colSoil = 'soil';
+  String colRain = 'rain';
+  String colCrop = 'crop';
+
+
   DatabaseHelper._createInstance(); // Named constructor to create instance of DatabaseHelper
 
   factory DatabaseHelper() {
@@ -53,8 +60,10 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
 
-    await db.execute('CREATE TABLE $todoTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
-        '$colDescription TEXT, $colDate TEXT, $colPriority INTEGER)');
+    // await db.execute('CREATE TABLE $todoTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
+    //     '$colDescription TEXT, $colDate TEXT, $colPriority INTEGER)');
+    await db.execute('CREATE TABLE $todoTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle INTEGER, '
+        '$colDescription TEXT, $colMainCrop TEXT, $colLandscape TEXT, $colSoil TEXT, $colRain TEXT, $colCrop TEXT  )');
     await db.execute('CREATE TABLE $updatemeTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
         '$colDescription TEXT, $colDate TEXT)');
     await db.execute('CREATE TABLE $knowledgeupTable($colId INTEGER PRIMARY KEY AUTOINCREMENT, $colTitle TEXT, '
@@ -101,12 +110,40 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<List<Map<String, dynamic>>> getToDoListSearchDb(BestFit todo) async {
+    Database db = await this.database;
+
+    String maincrop = todo.maincrop.toString();
+    String landscape = todo.landscape.toString();
+    String soil = todo.soil.toString();
+    String rain = todo.rain.toString();
+    int tempmax = (todo.title+5);
+    int tempmin = (todo.title-5);
+    //[maincrop,landscape,soil,rain,temp]
+    print("maincrop....................."+maincrop);
+    print("landscape....................."+landscape);
+    print("soil....................."+soil);
+    print("rain....................."+rain);
+    print("max....................."+tempmax.toString());
+    print("min....................."+tempmin.toString());
+    var result = await db.rawQuery('SELECT * FROM $todoTable WHERE $colMainCrop = ? AND $colLandscape = ? AND $colSoil = ? AND $colRain = ? AND $colTitle BETWEEN ? AND ?',[maincrop,landscape,soil,rain,tempmin,tempmax]);
+    //var result = await db.rawQuery('SELECT * FROM $todoTable WHERE $colTitle BETWEEN $tempmin AND $tempmax');
+    // var result = await db.rawQuery('SELECT * FROM $knowledgeupTable WHERE $colTitle LIKE "%d%" order by $colTitle ASC');
+    // var result = await db.query(knowledgeupTable, orderBy: '$colTitle ASC');
+    // String sql = String.format("select col1 from table where col2=%s and col3=%s","value for col2", "value for col3");
+    // Cursor cc = db.rawQuery(sql, null);
+
+    //DB::select('select * from test where mid=? and created>? where id=5 group by type', [$member, $from] )
+    return result;
+  }
+
   // Insert Operation: Insert a todo object to database
   Future<int> insertTodo(BestFit todo) async {
     Database db = await this.database;
-    debugPrint("hai"+todo.priority.toString());
+    //debugPrint("hai"+todo.priority.toString());
     debugPrint("hai2"+todo.title.toString());
     debugPrint("hai9"+todo.description.toString());
+    debugPrint("hai9"+todo.soil.toString());
     var result = await db.insert(todoTable, todo.toMap());
     debugPrint("haires "+result.toString());
     return result;
@@ -253,5 +290,20 @@ class DatabaseHelper {
 
     return todoList;
   }
+
+  Future<List<BestFit>> getTodoListSearch(BestFit todo) async {
+
+    var knowledgeMapList = await getToDoListSearchDb(todo); // Get 'Map List' from database
+    int count = knowledgeMapList.length;         // Count the number of map entries in db table
+
+    List<BestFit> todoList = List<BestFit>();
+    // For loop to create a 'todo List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      todoList.add(BestFit.fromMapObject(knowledgeMapList[i]));
+    }
+
+    return todoList;
+  }
+
 
 }

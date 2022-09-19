@@ -29,4 +29,49 @@ class NetworkHelper {
       }
 
   }
+  Future getDataKnowledgeUp(count_knowledgeup) async {
+
+    final Map<String, String> bodyData = {
+      "secret_key": "@@^%&^kdsfkjdkfUM",
+      "last_id":count_knowledgeup,
+    };
+
+    final response = await http.post(Uri.parse('http://192.168.1.102/backend_api/knowledgeup_ws.php'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
+        },
+        body: bodyData
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(response.statusCode.toString());
+      return null;
+    }
+
+  }
+
+  Future getDataBestFit(count_bestfit) async {
+
+    final Map<String, String> bodyData = {
+      "secret_key": "@@^%&^kdsfkjdkfUM",
+      "last_id":count_bestfit,
+    };
+
+    final response = await http.post(Uri.parse('http://192.168.1.102/backend_api/bestfit_ws.php'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
+        },
+        body: bodyData
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(response.statusCode.toString());
+      return null;
+    }
+
+  }
 }

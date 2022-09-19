@@ -65,7 +65,7 @@ class BestFitListState extends State<BestFitList> {
             ),
             title: Text(this.todoList[position].crop.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text((this.todoList[position].description.toString()).toString()),
+            subtitle: Text((this.todoList[position].description.toString()).substring(0,15)+"....."),
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,

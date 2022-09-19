@@ -164,10 +164,10 @@ class DatabaseHelper {
   Future<int> insertTodoKnowledge(Knowledge todoknowledge) async {
     Database db = await this.database;
     //debugPrint("hai"+todoupdate.priority.toString());
-    debugPrint("hai2"+todoknowledge.title.toString());
-    debugPrint("hai9"+todoknowledge.description.toString());
-    debugPrint("hai9"+todoknowledge.author.toString());
-    debugPrint("hai9"+todoknowledge.date.toString());
+    debugPrint("hai2k"+todoknowledge.title.toString());
+    debugPrint("hai9k"+todoknowledge.description.toString());
+    debugPrint("hai9k"+todoknowledge.author.toString());
+    debugPrint("hai9k"+todoknowledge.date.toString());
     var result = await db.insert(knowledgeupTable, todoknowledge.toMap());
     debugPrint("haires "+result.toString());
     return result;
@@ -314,5 +314,22 @@ class DatabaseHelper {
     return result;
   }
 
+  Future<int> getLastIdKnowledgeup() async {
+
+    Database db = await this.database;
+    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT(*) FROM $knowledgeupTable');
+    int result = Sqflite.firstIntValue(x);
+    //debugPrint("count here is "+result.toString());
+    return result;
+  }
+
+  Future<int> getLastIdBestFit() async {
+
+    Database db = await this.database;
+    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT(*) FROM $todoTable');
+    int result = Sqflite.firstIntValue(x);
+    //debugPrint("count here is "+result.toString());
+    return result;
+  }
 
 }

@@ -1,3 +1,4 @@
+import 'package:agrib/common/footer.dart';
 import 'package:flutter/material.dart';
 
 class HelpMeScreen extends StatefulWidget {
@@ -295,7 +296,20 @@ class _HelpMeScreenScreenState extends State<HelpMeScreen> {
           ),
         ],
       ),
+      bottomNavigationBar: new BottomAppBar(
 
+        // child: Text(
+        //   'Agricultural App - @Ujitha Sudasingha -2022',
+        //   style: TextStyle(
+        //     fontSize: 14.0,
+        //     fontWeight: FontWeight.bold,
+        //     color: Colors.black26,
+        //
+        //   ),
+        //   textAlign: TextAlign.center,
+        // ),
+        child: Footer(title:"Web : https://www.wfo-oma.org"),
+      ),
     );
   }
 }

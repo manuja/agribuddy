@@ -38,10 +38,10 @@ class KnowledgeupListState extends State<KnowledgeupList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
          // debugPrint('FAB clicked');
-          navigateToDetail(Knowledge('', '', '', ''), 'Add My Fair');
+          navigateToDetail(Knowledge('', '', '', ''), 'Search Article');
         },
         tooltip: 'Add My Fair',
-        child: Icon(Icons.add),
+        child: Icon(Icons.search),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -66,7 +66,7 @@ class KnowledgeupListState extends State<KnowledgeupList> {
               child: Text(getFirstLetter(this.knowledgeList[position].title.toString()),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            title: Text(this.knowledgeList[position].description.toString()+" - ",
+            title: Text(this.knowledgeList[position].title.toString()+" by "+this.knowledgeList[position].author.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
             //subtitle: Text((this.todoList[position].priority.toString()).toString()+' LKR'),
             //subtitle: Text(this.todoList[position].description),
@@ -74,10 +74,10 @@ class KnowledgeupListState extends State<KnowledgeupList> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 GestureDetector(
-                  child: Icon(Icons.delete,color: Colors.red,),
-                  onTap: () {
-                   // _delete(context, todoList[position]);
-                  },
+                  child: Text(this.knowledgeList[position].date.toString()),
+                  // onTap: () {
+                  //  // _delete(context, todoList[position]);
+                  // },
                 ),
               ],
             ),
@@ -115,7 +115,7 @@ class KnowledgeupListState extends State<KnowledgeupList> {
     print("aaaa");
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return KnowledgeUp(knowtodo, "aaaaaa");
+      return KnowledgeUp(knowtodo, title);
     }));
 
     //}else{

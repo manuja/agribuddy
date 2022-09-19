@@ -6,11 +6,11 @@ import 'package:agrib/updateme/updatelist.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:agrib/bestfit/bestfitlist.dart';
 import 'package:agrib/knowledgeup/knowledgeuplist.dart';
+
+import 'footer.dart';
 class MyGridScreen extends StatefulWidget {
 
   MyGridScreen({Key key}) : super(key: key);
-
-  //Knowledge todoknowledge;
 
   @override
   _MyGridScreenState createState() => _MyGridScreenState();
@@ -19,6 +19,7 @@ class MyGridScreen extends StatefulWidget {
 class _MyGridScreenState extends State<MyGridScreen> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Agri Buddy"),
@@ -156,16 +157,17 @@ Navigator.push(context,
           )),
       bottomNavigationBar: new BottomAppBar(
 
-        child: Text(
-          'Agricultural App - @Ujitha Sudasingha -2022',
-          style: TextStyle(
-            fontSize: 14.0,
-            fontWeight: FontWeight.bold,
-            color: Colors.black26,
-
-          ),
-          textAlign: TextAlign.center,
-        ),
+        // child: Text(
+        //   'Agricultural App - @Ujitha Sudasingha -2022',
+        //   style: TextStyle(
+        //     fontSize: 14.0,
+        //     fontWeight: FontWeight.bold,
+        //     color: Colors.black26,
+        //
+        //   ),
+        //   textAlign: TextAlign.center,
+        // ),
+        child: Footer(title:"Agricultural App - @Ujitha Sudasingha -2022"),
       ),
     );
   }

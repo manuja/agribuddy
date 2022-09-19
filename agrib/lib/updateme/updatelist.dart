@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:agrib/common/dashboard.dart';
 import 'package:agrib/knowledgeup/knowledgeup.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/common/database_helper.dart';
@@ -37,10 +38,10 @@ class UpdateListState extends State<UpdateList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
-          navigateToDetail(UpdateMe('', '',''), 'Add My Fair');
+          navigateToHome();
         },
         tooltip: 'Add My Fair',
-        child: Icon(Icons.add),
+        child: Icon(Icons.home),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -125,6 +126,15 @@ class UpdateListState extends State<UpdateList> {
     if (result == true) {
       updateListView();
     }
+  }
+
+  void navigateToHome() async {
+
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return MyGridScreen();
+    }));
+
   }
 
   void updateListView() {

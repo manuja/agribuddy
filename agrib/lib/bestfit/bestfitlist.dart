@@ -35,18 +35,17 @@ class BestFitListState extends State<BestFitList> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          debugPrint('FAB clicked');
-          navigateToDetail(BestFit('', '', '','',0,'',''), 'Add My Fair');
+          navigateToDetail(BestFit('', '', '','',0,'',''), 'Search Best Fit');
         },
-        tooltip: 'Add My Fair',
-        child: Icon(Icons.add),
+        tooltip: 'Search',
+        child: Icon(Icons.search),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
     );
   }
 
   ListView getTodoListView() {
-    debugPrint("mmmmmmmmmmmmmmmmm"+count.toString());
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
@@ -61,27 +60,26 @@ class BestFitListState extends State<BestFitList> {
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
-              child: Text(this.todoList[position].title.toString(),
+              child: Text(getFirstLetter(this.todoList[position].maincrop.toString()),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            title: Text(this.todoList[position].description.toString()+" - ",
+            title: Text(this.todoList[position].crop.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text((this.todoList[position].rain.toString()).toString()+' LKR'),
+            subtitle: Text((this.todoList[position].description.toString()).toString()),
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  child: Icon(Icons.delete,color: Colors.red,),
-                  onTap: () {
-                    _delete(context, todoList[position]);
-                  },
-                ),
-              ],
+              // children: <Widget>[
+              //   GestureDetector(
+              //     child: Icon(Icons.delete,color: Colors.red,),
+              //     onTap: () {
+              //       _delete(context, todoList[position]);
+              //     },
+              //   ),
+              // ],
             ),
             onTap: () {
-              debugPrint("ListTile Tapped");
-              navigateToDetail(this.todoList[position], 'Edit My Fair');
+              navigateToDetail(this.todoList[position], 'Edit My List');
             },
           ),
         );
@@ -96,7 +94,7 @@ class BestFitListState extends State<BestFitList> {
   void _delete(BuildContext context, BestFit todo) async {
     int result = await databaseHelper.deleteTodo(todo.id);
     if (result != 0) {
-      _showSnackBar(context, 'My Fair Deleted Successfully');
+      _showSnackBar(context, 'My List Deleted Successfully');
       updateListView();
     }
   }
@@ -110,10 +108,10 @@ class BestFitListState extends State<BestFitList> {
     //bool result=false;
     debugPrint("xddxxy"+todo.id.toString());
     //if (todo.id != null) {
-      print("aaaa");
+     // print("aaaa");
       bool result =
       await Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return SearchBest(todo, "aaaaaa");
+        return SearchBest(todo, title);
       }));
 
     //}else{

@@ -47,10 +47,10 @@ class BestFitListSearchState extends State<BestFitListSearch> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
-          navigateToDetail(BestFit('', '', '','',0,'',''), 'Add My Fair');
+          navigateToDetail(BestFit('', '', '','',0,'',''), 'Search Best Fit');
         },
         tooltip: 'Add My Fair',
-        child: Icon(Icons.add),
+        child: Icon(Icons.search),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
@@ -72,23 +72,23 @@ class BestFitListSearchState extends State<BestFitListSearch> {
           child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.amber,
-              child: Text(this.todoList[position].title.toString(),
+              child: Text(getFirstLetter(this.todoList[position].maincrop.toString()),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            title: Text(this.todoList[position].description.toString()+" - ",
+            title: Text(this.todoList[position].crop.toString()+" - ",
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text((this.todoList[position].rain.toString()).toString()+' mmmm'),
+            subtitle: Text((this.todoList[position].description.toString()).toString()),
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  child: Icon(Icons.delete,color: Colors.red,),
-                  onTap: () {
-                    _delete(context, todoList[position]);
-                  },
-                ),
-              ],
+              // children: <Widget>[
+              //   GestureDetector(
+              //     child: Icon(Icons.delete,color: Colors.red,),
+              //     onTap: () {
+              //       _delete(context, todoList[position]);
+              //     },
+              //   ),
+              // ],
             ),
             onTap: () {
               debugPrint("ListTile Tapped");
@@ -124,7 +124,7 @@ class BestFitListSearchState extends State<BestFitListSearch> {
     print("aaaa");
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return SearchBest(todo, "aaaaaa");
+      return SearchBest(todo, title);
     }));
 
     //}else{

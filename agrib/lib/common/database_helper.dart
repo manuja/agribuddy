@@ -84,7 +84,7 @@ class DatabaseHelper {
     Database db = await this.database;
 
 //		var result = await db.rawQuery('SELECT * FROM $todoTable order by $colTitle ASC');
-    var result = await db.query(updatemeTable, orderBy: '$colTitle ASC');
+    var result = await db.query(updatemeTable, orderBy: '$colDate DESC');
     return result;
   }
 
@@ -303,6 +303,15 @@ class DatabaseHelper {
     }
 
     return todoList;
+  }
+
+  Future<int> getLastIdUpdateMe() async {
+
+    Database db = await this.database;
+    List<Map<String, dynamic>> x = await db.rawQuery('SELECT COUNT(*) FROM $updatemeTable');
+    int result = Sqflite.firstIntValue(x);
+    //debugPrint("count here is "+result.toString());
+    return result;
   }
 
 

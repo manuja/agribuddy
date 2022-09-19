@@ -92,7 +92,7 @@ class TodoDetailState extends State<SearchBest> {
 
         child: Scaffold(
           appBar: AppBar(
-            //title: Text(appBarTitle),
+            title: Text(appBarTitle),
             leading: IconButton(icon: Icon(
                 Icons.arrow_back),
                 onPressed: () {
@@ -297,12 +297,11 @@ class TodoDetailState extends State<SearchBest> {
                           color: Theme.of(context).primaryColorDark,
                           textColor: Theme.of(context).primaryColorLight,
                           child: Text(
-                            'Save',
+                            'Search',
                             textScaleFactor: 1.5,
                           ),
                           onPressed: () {
                             setState(() {
-                              debugPrint("Save button clicked");
                              // _save();
                               _search();
                             });
@@ -312,22 +311,22 @@ class TodoDetailState extends State<SearchBest> {
 
                       Container(width: 5.0,),
 
-                      Expanded(
-                        child: RaisedButton(
-                          color: Theme.of(context).primaryColorDark,
-                          textColor: Theme.of(context).primaryColorLight,
-                          child: Text(
-                            'Delete',
-                            textScaleFactor: 1.5,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              debugPrint("Delete button clicked");
-                              _delete();
-                            });
-                          },
-                        ),
-                      ),
+                      // Expanded(
+                      //   child: RaisedButton(
+                      //     color: Theme.of(context).primaryColorDark,
+                      //     textColor: Theme.of(context).primaryColorLight,
+                      //     child: Text(
+                      //       'Delete',
+                      //       textScaleFactor: 1.5,
+                      //     ),
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         debugPrint("Delete button clicked");
+                      //         _delete();
+                      //       });
+                      //     },
+                      //   ),
+                      // ),
 
                     ],
                   ),

@@ -66,7 +66,7 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
 
         child: Scaffold(
           appBar: AppBar(
-            //title: Text(appBarTitle),
+            title: Text(appBarTitle),
             leading: IconButton(icon: Icon(
                 Icons.arrow_back),
                 onPressed: () {

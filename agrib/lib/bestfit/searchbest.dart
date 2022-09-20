@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:agrib/services/updateme_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+//import 'package:location/location.dart';
 
 import 'bestfitlistsearch.dart';
 
@@ -11,7 +15,9 @@ class SearchBest extends StatefulWidget {
   final String appBarTitle;
   final BestFit todo;
 
+
   SearchBest(this.todo, this.appBarTitle);
+  //getCurrentLocation();
 
   @override
   State<StatefulWidget> createState() {
@@ -24,6 +30,7 @@ class SearchBest extends StatefulWidget {
 class TodoDetailState extends State<SearchBest> {
 
   DatabaseHelper helper = DatabaseHelper();
+  NetworkHelper networkHelper = NetworkHelper();
 
   String appBarTitle;
   BestFit todo;
@@ -32,6 +39,7 @@ class TodoDetailState extends State<SearchBest> {
   String soilItem;
   String rainItem;
   int tempItem;
+  String temp="";
 
 
   TextEditingController cropController = TextEditingController();
@@ -41,13 +49,43 @@ class TodoDetailState extends State<SearchBest> {
 
 
   TodoDetailState(this.todo, this.appBarTitle);
+  // LocationData _currentPosition;
+  // String _address;
+  // Location location = new Location();
+
+  @override
+  void initState() {
+    super.initState();
+    //var location=fetchLocation();
+   // fetchLocation();
+
+    getCurrentLocation();
+    //print(_currentPosition);
+    //getCurrentLocation() async {}
+
+
+    //${_currentPosition.latitude}
+  }
+
 
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
   String selectedCountry;
+  Position _currentPosition;
+
 
   @override
   Widget build(BuildContext context) {
+
+    //fetchLocation() async {}
+   // getCurrentLocation() async {};
+    //print(_currentPosition);
+   //var temp=  getTemperature();
+   // print("ssssmmmm"+temp.toString());
+
+    //Future<List<Address>> getAddress(double lat, double lang) async {}
+
+
     TextStyle textStyle = Theme
         .of(context)
         .textTheme
@@ -94,6 +132,7 @@ class TodoDetailState extends State<SearchBest> {
 
     // final _formKey = GlobalKey<FormState>();
     // bool _autovalidate = false;
+
 
 
     return WillPopScope(
@@ -261,8 +300,9 @@ class TodoDetailState extends State<SearchBest> {
 
                     // Initial Value
                     value: tempItem,
+                   // value: getTemperature(),
                     hint: Text(
-                      'Temperature',
+                      'Temperature In Celsius',
                     ),
                     // Down Arrow Icon
                     icon: const Icon(Icons.keyboard_arrow_down),
@@ -284,7 +324,9 @@ class TodoDetailState extends State<SearchBest> {
                       });
                     },
                     validator: (value) => value == null ? 'Temperature is required' : null,
+
                   ),
+
                 ),
                 // Padding(
                 //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0,left: 10.0, right: 15.0),
@@ -304,43 +346,44 @@ class TodoDetailState extends State<SearchBest> {
                 //     ),
                 //   ),
                 // ),
-                // Padding(
-                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0,left: 10.0, right: 15.0),
-                //   child: TextField(
-                //     controller: descriptionController,
-                //     style: textStyle,
-                //     onChanged: (value) {
-                //       debugPrint('Something changed in Description Text Field');
-                //       updateDescription();
-                //     },
-                //     decoration: InputDecoration(
-                //         labelText: 'Description',
-                //         labelStyle: textStyle,
-                //         border: OutlineInputBorder(
-                //             borderRadius: BorderRadius.circular(5.0)
-                //         )
-                //     ),
-                //   ),
-                // ),
+                Padding(
+                  padding: EdgeInsets.only(top: 0.0, bottom: 15.0,left: 10.0, right: 15.0),
+                   child: Text( "Sugg :Current Temperature Of Your Location is " +temp+ "C"
+                  // child:Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     if (_currentPosition != null) Text(
+                  //         "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"
+                  //     ),
+                  //     FlatButton(
+                  //       child: Text("Get location"),
+                  //
+                  //     ),
+                  //   ],
+                  // ),
 
-                // Padding(
-                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-                //   child: TextField(
-                //     controller: prioController,
-                //     style: textStyle,
-                //     onChanged: (value) {
-                //       debugPrint('Something changed in Priority Text Field');
-                //       updatePriority();
-                //     },
-                //     decoration: InputDecoration(
-                //         labelText: 'Rough Cost',
-                //         labelStyle: textStyle,
-                //         border: OutlineInputBorder(
-                //             borderRadius: BorderRadius.circular(5.0)
-                //         )
-                //     ),
-                //   ),
-                // ),
+                  // child : RichText(
+                  //     text: TextSpan(
+                  //         text: 'Logg\n',
+                  //         children: _currentPosition == null
+                  //             ? [
+                  //           const TextSpan(text: 'Texjjjjjjjjjjjjjjjjjjjjjjjjjjjt1\n'),
+                  //           const TextSpan(text: 'Text2\n')
+                  //         ]
+                  //             : [
+                  //            TextSpan(text: "Sugg :Current Temperature Of Your Location is " + getTemperature(_currentPosition).toString() + "C"),
+                  //
+                  //         ]))
+                ),
+
+        //         Padding(
+        //           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
+        //           child:
+        //   Text(
+        //   "Latitude: ${_currentPosition.latitude} Longitude: ${_currentPosition.longitude}",
+        //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+        // ),
+             ),
 
                 Padding(
                   padding: EdgeInsets.only(top: 15.0, bottom: 15.0,left: 10.0, right: 15.0),
@@ -405,6 +448,9 @@ class TodoDetailState extends State<SearchBest> {
           ),
 
         ));
+
+
+
   }
 
   void moveToLastScreen() {
@@ -431,6 +477,7 @@ class TodoDetailState extends State<SearchBest> {
   void updatePriority(){
     //todo.priority=int.parse(prioController.text);
   }
+
 
   // Save data to database
   void _save() async {
@@ -541,5 +588,110 @@ class TodoDetailState extends State<SearchBest> {
         builder: (_) => alertDialog
     );
   }
+
+  // fetchLocation() async {
+  //   bool _serviceEnabled;
+  //   PermissionStatus _permissionGranted;
+  //
+  //   _serviceEnabled = await location.serviceEnabled();
+  //   if (!_serviceEnabled) {
+  //     _serviceEnabled = await location.requestService();
+  //     if (!_serviceEnabled) {
+  //       return;
+  //     }
+  //   }
+  //
+  //   _permissionGranted = await location.hasPermission();
+  //   if (_permissionGranted == PermissionStatus.denied) {
+  //     _permissionGranted = await location.requestPermission();
+  //     if (_permissionGranted != PermissionStatus.granted) {
+  //       return;
+  //     }
+  //   }
+  //
+  //   _currentPosition = await location.getLocation();
+  //   location.onLocationChanged.listen((LocationData currentLocation) {
+  //     setState(() {
+  //       _currentPosition = currentLocation;
+  //       // getAddress(_currentPosition.latitude, _currentPosition.longitude)
+  //       //     .then((value) {
+  //       //   setState(() {
+  //       //     _address = "${value.first.addressLine}";
+  //       //   });
+  //       // });
+  //     });
+  //   });
+  // }
+
+  getCurrentLocation() async {
+    await Geolocator
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
+        .then((Position position) {
+
+      getTemperature(position);
+          //retrun position;
+      // setState(() {
+      //   _currentPosition = position;
+      // });
+    }).catchError((e) {
+      print(e);
+    });
+  }
+
+  Future<int> getTemperature(currentLocation) async{
+
+    if(currentLocation==null){
+    print("null is location");
+    }else{
+      print("rabadammn"+int.parse(currentLocation.latitude.round().toString()).toString());
+      var internetconnection = await isConnected();
+      if(internetconnection==true) {
+        var lati=currentLocation.latitude.toString();
+        var lani=currentLocation.longitude.toString();
+        print("here"+lati);
+        print("here"+lani);
+        //DatabaseHelper helper = new DatabaseHelper();
+
+        var decodedTemp = await networkHelper.getTemperature(lati,lani);
+        print(temp);
+        setState(() {
+          //String temp;
+          temp = temp+decodedTemp[0]['temp'].toString();
+        });
+        print("abc"+decodedTemp[0]['temp'].toString());
+      }
+      return int.parse(currentLocation.latitude.round().toString());
+    }
+    //return int.parse(currentLocation.latitude.round().toString());
+    //return int.parse(currentLocation.latitude.toString());
+    //return 100;
+    //int.parse(currentLocation)
+  }
+
+  Future<bool> isConnected() async {
+    try {
+      List<InternetAddress> result = await InternetAddress.lookup('google.com')
+          .timeout(Duration(seconds: 5));
+
+      //
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        return true;
+      }
+      //
+      else {
+        return false;
+      }
+    } on SocketException catch (_) {
+      return false;
+    }
+  }
+
+
+// Future<List<Address>> getAddress(double lat, double lang) async {
+  //   final coordinates = new Coordinates(latitude, longitude);
+  //   List<Address> address =
+  //   await Geocoder.local.findAddressesFromCoordinates(coordinates);
+  //   return address;
+  // }
 
 }

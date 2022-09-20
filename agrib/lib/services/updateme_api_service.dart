@@ -10,11 +10,11 @@ class NetworkHelper {
   Future getData(count_updateme) async {
 
     final Map<String, String> bodyData = {
-      "secret_key": "@@^%&^kdsfkjdkfUM",
+      "secret_key": "1@@^%&^kdsfkjdkfUM",
       "last_id":count_updateme,
     };
 
-    final response = await http.post(Uri.parse('http://192.168.1.102/backend_api/ws.php'),
+    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/ws.php'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
         },
@@ -32,11 +32,11 @@ class NetworkHelper {
   Future getDataKnowledgeUp(count_knowledgeup) async {
 
     final Map<String, String> bodyData = {
-      "secret_key": "@@^%&^kdsfkjdkfUM",
+      "secret_key": "2@@^%&^kdsfkjdkfUM",
       "last_id":count_knowledgeup,
     };
 
-    final response = await http.post(Uri.parse('http://192.168.1.102/backend_api/knowledgeup_ws.php'),
+    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/knowledgeup_ws.php'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
         },
@@ -55,11 +55,35 @@ class NetworkHelper {
   Future getDataBestFit(count_bestfit) async {
 
     final Map<String, String> bodyData = {
-      "secret_key": "@@^%&^kdsfkjdkfUM",
+      "secret_key": "3@@^%&^kdsfkjdkfUM",
       "last_id":count_bestfit,
     };
 
-    final response = await http.post(Uri.parse('http://192.168.1.102/backend_api/bestfit_ws.php'),
+    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/bestfit_ws.php'),
+        headers: {
+          HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
+        },
+        body: bodyData
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      print(response.statusCode.toString());
+      return null;
+    }
+
+  }
+
+  Future getTemperature(lat,lan) async {
+    print("abcdefg");
+    final Map<String, String> bodyData = {
+      "secret_key": "4@@^%&^kdsfkjdkfUM",
+      "lat":lat.toString(),
+      "lan": lan.toString(),
+    };
+
+    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/temparature_ws.php'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
         },

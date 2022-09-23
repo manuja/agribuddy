@@ -1,18 +1,19 @@
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/knowledgeup/knowledge.dart';
 import 'package:agrib/services/updateme_api_service.dart';
-import 'package:agrib/updateme/updatebest.dart';
 import 'package:agrib/updateme/updateme.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'common/dashboard.dart';
 import 'common/database_helper.dart';
 import 'dart:async';
 import 'dart:io';
+//import 'package:battery_plus/battery_plus.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() async{
 
   fetchOfflineData();
+
   runApp(
       AgribApp()
   );
@@ -25,7 +26,6 @@ class AgribApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var internetconnection_check;
     return MaterialApp(
       title: 'Agri Buddy',
       debugShowCheckedModeBanner: false,
@@ -39,10 +39,15 @@ class AgribApp extends StatelessWidget {
 
 }
 
+
 void fetchOfflineData() async {
 
   var internetconnection = await isConnected();
+  //var battery = Battery();
+  //var batlevel = await battery.batteryLevel;
+  //print(batlevel);
 
+  //if(internetconnection==true && batlevel > 10){
   if(internetconnection==true){
     DatabaseHelper helper = new DatabaseHelper();
     NetworkHelper networkHelper = NetworkHelper();
@@ -63,7 +68,7 @@ void fetchOfflineData() async {
         result = await helper.insertTodoUpdate(todoupdate);
       }
     }else{
-      print("It is null");
+
     }
 
     //Knowledgeup online syncing
@@ -84,7 +89,7 @@ void fetchOfflineData() async {
         result = await helper.insertTodoKnowledge(todoknowledge);
       }
     }else{
-      print("It is null knowledgeup");
+
     }
 
     //Bestfit Online sync
@@ -109,7 +114,7 @@ void fetchOfflineData() async {
         result = await helper.insertTodo(todobestfit);
       }
     }else{
-      print("It is null bestfit");
+
     }
 
 
@@ -123,12 +128,9 @@ Future<bool> isConnected() async {
   try {
     List<InternetAddress> result = await InternetAddress.lookup('google.com')
         .timeout(Duration(seconds: 5));
-
-    //
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
       return true;
     }
-    //
     else {
       return false;
     }
@@ -136,5 +138,7 @@ Future<bool> isConnected() async {
     return false;
   }
 }
+
+
 
 

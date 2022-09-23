@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:agrib/common/route_controller.dart';
 import 'package:agrib/knowledgeup/knowledge.dart';
 import 'package:agrib/knowledgeup/knowledgeup.dart';
+import 'package:agrib/knowledgeup/knowledgeup_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
@@ -26,6 +28,7 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
 
   //print("serious"+knowledgeList[0].);
   DatabaseHelper databaseHelper = DatabaseHelper();
+  RouteCommon routeController= new RouteCommon();
   List<Knowledge> knowledgeList;
   Knowledge todoknowledge;
   String appBarTitle;
@@ -44,17 +47,26 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Knowledge Up List'),
+        title: Text('Article List Serach Result'),
       ),
       body: getKnowledgeTodoListView(),
       bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Container(height: 50.0),
+        color:Colors.white,
+        shape: CircularNotchedRectangle(), //shape of notch
+        notchMargin: 5, //notche margin between floating button and bottom appbar
+        child: Row( //children inside bottom appbar
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(icon: Icon(Icons.home_rounded, color: Colors.blueAccent,size:38), onPressed: () {routeController.navigateToHome(this.context);} , padding: EdgeInsets.only(top: 0.0, left: 70.0), ),
+            IconButton(icon: Icon(Icons.settings_backup_restore_rounded, color: Colors.blueAccent,size:38), onPressed: () {routeController.navigateToKnowledgeUpList(this.context);}, padding: EdgeInsets.only(top: 0.0, right: 70.0),),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // debugPrint('FAB clicked');
-          navigateToDetail(Knowledge('', '', '', ''), 'Search Article');
+          navigateToSearch(Knowledge('', '', '', ''), 'Search Article');
         },
         tooltip: 'Add My Fair',
         child: Icon(Icons.search),
@@ -98,8 +110,8 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
               ],
             ),
             onTap: () {
-              debugPrint("ListTile Tapped");
-              navigateToDetail(this.knowledgeList[position], 'Edit My Fair');
+              debugPrint("ListTile here Tapped");
+              navigateToDetail(this.knowledgeList[position], 'Detail Description');
             },
           ),
         );
@@ -109,6 +121,26 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
 
   getFirstLetter(String title) {
     return title.substring(0, 1);
+  }
+
+  void navigateToSearch(Knowledge knowtodo, String title) async {
+    //bool result=false;
+    debugPrint("xddxxy"+knowtodo.id.toString());
+    //if (todo.id != null) {
+    print("aaaa");
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return KnowledgeUp(knowtodo, title);
+    }));
+
+    //}else{
+    print("aass");
+    //}
+
+
+    if (result == true) {
+      updateListView();
+    }
   }
 
   void _delete(BuildContext context, BestFit todo) async {
@@ -131,7 +163,7 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
     print("aaaa");
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return KnowledgeUp(knowtodo, title);
+      return KnowledgeUpDetail(knowtodo, title);
     }));
 
     //}else{

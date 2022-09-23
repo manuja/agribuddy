@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'package:agrib/common/route_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'bestfit_controller.dart';
 
 class BestFitListSearch extends StatefulWidget {
 
@@ -20,6 +23,8 @@ class BestFitListSearch extends StatefulWidget {
 
 class BestFitListSearchState extends State<BestFitListSearch> {
   DatabaseHelper databaseHelper = DatabaseHelper();
+  RouteCommon routeController= new RouteCommon();
+  BestFitController bestFitController=new BestFitController();
   List<BestFit> todoList;
   BestFit todo;
   String appBarTitle;
@@ -31,23 +36,31 @@ class BestFitListSearchState extends State<BestFitListSearch> {
   Widget build(BuildContext context) {
     if (todoList == null) {
       todoList = List<BestFit>();
-      //updateListView();
       getListView(todo);
     }
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Best Fit List'),
+        title: Text('Best Fit List Search Result'),
       ),
       body: getTodoListView(),
       bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        child: Container(height: 50.0),
+        color:Colors.white,
+        shape: CircularNotchedRectangle(), //shape of notch
+        notchMargin: 5, //notche margin between floating button and bottom appbar
+        child: Row( //children inside bottom appbar
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            IconButton(icon: Icon(Icons.home_rounded, color: Colors.blueAccent,size:38), onPressed: () {routeController.navigateToHome(this.context);} , padding: EdgeInsets.only(top: 0.0, left: 70.0), ),
+            IconButton(icon: Icon(Icons.settings_backup_restore_rounded, color: Colors.blueAccent,size:38), onPressed: () {routeController.navigateToBestFitList(this.context);}, padding: EdgeInsets.only(top: 0.0, right: 70.0),),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
-          navigateToDetail(BestFit('', '', '','',0,'',''), 'Search Best Fit');
+          bestFitController.navigateToDetail(BestFit('', '', '','',0,'',''), 'Search Best Fit',context);
         },
         tooltip: 'Add My Fair',
         child: Icon(Icons.search),
@@ -57,15 +70,10 @@ class BestFitListSearchState extends State<BestFitListSearch> {
   }
 
   ListView getTodoListView() {
-    debugPrint("mmmmmmmmmmmmmmmmm"+count.toString());
     return ListView.builder(
       itemCount: count,
       itemBuilder: (BuildContext context, int position) {
-        debugPrint("xxxy p"+this.todoList[position].toString());
-        debugPrint("xxxy id"+this.todoList[position].id.toString());
-        debugPrint("xxxy ti"+this.todoList[position].title.toString());
-        debugPrint("xxxy des"+this.todoList[position].description.toString());
-        debugPrint("xxxy des2"+this.todoList[position].soil.toString());
+
         return Card(
           color: Colors.white,
           elevation: 2.0,
@@ -81,18 +89,9 @@ class BestFitListSearchState extends State<BestFitListSearch> {
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
-              // children: <Widget>[
-              //   GestureDetector(
-              //     child: Icon(Icons.delete,color: Colors.red,),
-              //     onTap: () {
-              //       _delete(context, todoList[position]);
-              //     },
-              //   ),
-              // ],
             ),
             onTap: () {
-              debugPrint("ListTile Tapped");
-              navigateToDetail(this.todoList[position], 'Edit My Fair');
+              bestFitController.navigateToDetail(this.todoList[position], 'Edit My Fair',context);
             },
           ),
         );
@@ -104,39 +103,6 @@ class BestFitListSearchState extends State<BestFitListSearch> {
     return title.substring(0, 2);
   }
 
-  void _delete(BuildContext context, BestFit todo) async {
-    int result = await databaseHelper.deleteTodo(todo.id);
-    if (result != 0) {
-      _showSnackBar(context, 'My Fair Deleted Successfully');
-      updateListView();
-    }
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
-  void navigateToDetail(BestFit todo, String title) async {
-    //bool result=false;
-    debugPrint("xddxxy"+todo.id.toString());
-    //if (todo.id != null) {
-    print("aaaa");
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return SearchBest(todo, title);
-    }));
-
-    //}else{
-    print("aass");
-    //}
-
-
-    if (result == true) {
-      updateListView();
-    }
-  }
-
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
@@ -144,7 +110,6 @@ class BestFitListSearchState extends State<BestFitListSearch> {
       todoListFuture.then((todoList) {
         setState(() {
           this.todoList = todoList;
-          debugPrint("rrrr"+todoList.length.toString());
           this.count = todoList.length;
         });
       });
@@ -152,7 +117,6 @@ class BestFitListSearchState extends State<BestFitListSearch> {
   }
 
   void getListView(BestFit todo) {
-    print("here it.....................");
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
     dbFuture.then((database) {
       Future<List<BestFit>> todoListFuture = databaseHelper.getTodoListSearch(todo);

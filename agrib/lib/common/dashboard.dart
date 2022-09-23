@@ -1,16 +1,12 @@
+import 'package:agrib/common/route_controller.dart';
 import 'package:agrib/helpme/helpme.dart';
-import 'package:agrib/knowledgeup/knowledge.dart';
-import 'package:agrib/knowledgeup/knowledgeup.dart';
 import 'package:flutter/material.dart';
-import 'package:agrib/updateme/updatelist.dart';
-import 'package:agrib/bestfit/searchbest.dart';
-import 'package:agrib/bestfit/bestfitlist.dart';
-import 'package:agrib/knowledgeup/knowledgeuplist.dart';
 
 import 'footer.dart';
 class MyGridScreen extends StatefulWidget {
 
   MyGridScreen({Key key}) : super(key: key);
+
 
   @override
   _MyGridScreenState createState() => _MyGridScreenState();
@@ -20,6 +16,7 @@ class _MyGridScreenState extends State<MyGridScreen> {
   @override
   Widget build(BuildContext context) {
 
+    RouteCommon routeController= new RouteCommon();
     return Scaffold(
       appBar: AppBar(
         title: Text("Agri Buddy"),
@@ -34,8 +31,7 @@ class _MyGridScreenState extends State<MyGridScreen> {
             maxCrossAxisExtent: 200.0,
             children: <Widget>[
               InkWell(
-                onTap: () {Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => new BestFitList()));}, // Handle your callback
+                onTap: () {routeController.navigateToBestFitList(context);}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -64,9 +60,7 @@ class _MyGridScreenState extends State<MyGridScreen> {
               ),
               InkWell(
 
-                onTap: () {Knowledge todoknowledge;
-Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => new KnowledgeupList()));}, // Handle your callback
+                onTap: () {routeController.navigateToKnowledgeUpList(context);}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -94,8 +88,7 @@ Navigator.push(context,
                 ),
               ),
               InkWell(
-                onTap: () {Navigator.push(context,
-                    new MaterialPageRoute(builder: (context) => new UpdateList()));}, // Handle your callback
+                onTap: () {routeController.navigateToUpdateMe(context);}, // Handle your callback
                 child: Container(
                   padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -156,18 +149,7 @@ Navigator.push(context,
             ],
           )),
       bottomNavigationBar: new BottomAppBar(
-
-        // child: Text(
-        //   'Agricultural App - @Ujitha Sudasingha -2022',
-        //   style: TextStyle(
-        //     fontSize: 14.0,
-        //     fontWeight: FontWeight.bold,
-        //     color: Colors.black26,
-        //
-        //   ),
-        //   textAlign: TextAlign.center,
-        // ),
-        child: Footer(title:"Agricultural App - @Ujitha Sudasingha -2022"),
+        child: Footer(title:"Agricultural App - @Ujitha Sudasingha -2022"), //custom component
       ),
     );
   }

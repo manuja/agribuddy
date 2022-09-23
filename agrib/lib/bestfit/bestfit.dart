@@ -31,10 +31,6 @@ class BestFit {
 
   String get description => _description;
 
-  //int get priority => _priority;
-
-  //String get date => _date;
-
   set maincrop(String newMainCrop) {
     if (newMainCrop.length <= 255) {
       this._maincrop = newMainCrop;
@@ -74,14 +70,6 @@ class BestFit {
     }
   }
 
-  // set date(String newDate) {
-  //   this._date = newDate;
-  // }
-  //
-  // set priority(int newPriority) {
-  //   this._priority = newPriority;
-  // }
-
   // Convert a Note object into a Map object
   Map<String, dynamic> toMap() {
 
@@ -97,8 +85,6 @@ class BestFit {
     map['description'] = _description;
     map['soil'] = _soil;
     map['rain'] = _rain;
-    //map['date'] = _date;
-   // map['priority'] = _priority;
 
     return map;
   }
@@ -113,8 +99,7 @@ class BestFit {
     this._description = map['description'];
     this._soil = map['soil'];
     this._rain = map['rain'];
-    //this._date = map['date'];
-    //this._priority= map['priority'];
+
   }
 }
 

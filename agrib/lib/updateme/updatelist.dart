@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:agrib/common/dashboard.dart';
+import 'package:agrib/common/route_controller.dart';
 import 'package:agrib/knowledgeup/knowledgeup.dart';
+import 'package:agrib/updateme/updateme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
@@ -18,6 +20,8 @@ class UpdateListState extends State<UpdateList> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   List<UpdateMe> updateList;
   int count = 0;
+  UpdateMeController updatemeController=new UpdateMeController();
+  RouteCommon routeController= new RouteCommon();
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +42,7 @@ class UpdateListState extends State<UpdateList> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           debugPrint('FAB clicked');
-          navigateToHome();
+          routeController.navigateToHome(this.context);;
         },
         tooltip: 'Add My Fair',
         child: Icon(Icons.home),
@@ -81,10 +85,10 @@ class UpdateListState extends State<UpdateList> {
               ],
             ),
 
-            onTap: () {
-              debugPrint("ListTile Tapped");
-              navigateToDetail(this.updateList[position], 'Edit My Fair');
-            },
+            // onTap: () {
+            //   debugPrint("ListTile Tapped");
+            //   navigateToDetail(this.updateList[position], 'Edit My Fair');
+            // },
           ),
         );
       },
@@ -93,48 +97,6 @@ class UpdateListState extends State<UpdateList> {
 
   getFirstLetter(String title) {
     return title.substring(0, 2);
-  }
-
-  void _delete(BuildContext context, UpdateMe todoupdate) async {
-    int result = await databaseHelper.deleteTodoUpdate(todoupdate.id);
-    if (result != 0) {
-      _showSnackBar(context, 'My Fair Deleted Successfully');
-      updateListView();
-    }
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
-  void navigateToDetail(UpdateMe todoupdate, String title) async {
-    //bool result=false;
-    debugPrint("xddxxy"+todoupdate.id.toString());
-    //if (todo.id != null) {
-    print("aaaa");
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return UpdateBest(todoupdate, "aaaaaa");
-    }));
-
-    //}else{
-    print("aass");
-    //}
-
-
-    if (result == true) {
-      updateListView();
-    }
-  }
-
-  void navigateToHome() async {
-
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return MyGridScreen();
-    }));
-
   }
 
   void updateListView() {

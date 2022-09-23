@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:agrib/bestfit/bestfit_controller.dart';
 import 'package:agrib/services/updateme_api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
-//import 'package:location/location.dart';
-
 import 'bestfitlistsearch.dart';
 
 class SearchBest extends StatefulWidget {
@@ -17,7 +16,6 @@ class SearchBest extends StatefulWidget {
 
 
   SearchBest(this.todo, this.appBarTitle);
-  //getCurrentLocation();
 
   @override
   State<StatefulWidget> createState() {
@@ -31,6 +29,7 @@ class TodoDetailState extends State<SearchBest> {
 
   DatabaseHelper helper = DatabaseHelper();
   NetworkHelper networkHelper = NetworkHelper();
+  BestFitController bestFitController=new BestFitController();
 
   String appBarTitle;
   BestFit todo;
@@ -45,26 +44,15 @@ class TodoDetailState extends State<SearchBest> {
   TextEditingController cropController = TextEditingController();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  //TextEditingController prioController = TextEditingController();
-
 
   TodoDetailState(this.todo, this.appBarTitle);
-  // LocationData _currentPosition;
-  // String _address;
-  // Location location = new Location();
 
   @override
   void initState() {
     super.initState();
-    //var location=fetchLocation();
-   // fetchLocation();
-
+    print("one here");
     getCurrentLocation();
-    //print(_currentPosition);
-    //getCurrentLocation() async {}
 
-
-    //${_currentPosition.latitude}
   }
 
 
@@ -76,15 +64,6 @@ class TodoDetailState extends State<SearchBest> {
 
   @override
   Widget build(BuildContext context) {
-
-    //fetchLocation() async {}
-   // getCurrentLocation() async {};
-    //print(_currentPosition);
-   //var temp=  getTemperature();
-   // print("ssssmmmm"+temp.toString());
-
-    //Future<List<Address>> getAddress(double lat, double lang) async {}
-
 
     TextStyle textStyle = Theme
         .of(context)
@@ -99,9 +78,6 @@ class TodoDetailState extends State<SearchBest> {
       todo.landscape=landScape.toString();
       todo.soil=soilItem.toString();
       todo.rain=rainItem.toString();
-
-    //String _dropdownvalue;
-    //String mainCrop;
 
     var itemsRain = [
       'High',
@@ -130,15 +106,10 @@ class TodoDetailState extends State<SearchBest> {
 
     var itemsTemp = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99];
 
-    // final _formKey = GlobalKey<FormState>();
-    // bool _autovalidate = false;
-
-
-
     return WillPopScope(
 
         onWillPop: () {
-          moveToLastScreen();
+          bestFitController.moveToLastScreen(context);
         },
 
         child: Scaffold(
@@ -147,7 +118,7 @@ class TodoDetailState extends State<SearchBest> {
             leading: IconButton(icon: Icon(
                 Icons.arrow_back),
                 onPressed: () {
-                  moveToLastScreen();
+                  bestFitController.moveToLastScreen(context);
                 }
             ),
           ),
@@ -188,16 +159,7 @@ class TodoDetailState extends State<SearchBest> {
                       });
                     },
                     validator: (value) => value == null ? 'Main Crop is required' : null,
-                    // onChanged: (value) =>
-                    //     setState(() => mainCrop = value),
-                    // validator: (value) => value == null ? 'field required' : null,
-                    // items:
-                    // ['MR.', 'MS.'].map<DropdownMenuItem<String>>((String value) {
-                    //   return DropdownMenuItem<String>(
-                    //     value: value,
-                    //     child: Text(value),
-                    //   );
-                    // }).toList(),
+
                   ),
                   ),
 
@@ -328,61 +290,11 @@ class TodoDetailState extends State<SearchBest> {
                   ),
 
                 ),
-                // Padding(
-                //   padding: EdgeInsets.only(top: 15.0, bottom: 15.0,left: 10.0, right: 15.0),
-                //   child: TextField(
-                //     controller: titleController,
-                //     style: textStyle,
-                //     onChanged: (value) {
-                //       debugPrint('Something changed in Title Text Field');
-                //       updateTitle();
-                //     },
-                //     decoration: InputDecoration(
-                //         labelText: 'Temperature',
-                //         labelStyle: textStyle,
-                //         border: OutlineInputBorder(
-                //             borderRadius: BorderRadius.circular(5.0)
-                //         )
-                //     ),
-                //   ),
-                // ),
                 Padding(
                   padding: EdgeInsets.only(top: 0.0, bottom: 15.0,left: 10.0, right: 15.0),
-                   child: Text( "Sugg :Current Temperature Of Your Location is " +temp+ "C"
-                  // child:Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: <Widget>[
-                  //     if (_currentPosition != null) Text(
-                  //         "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"
-                  //     ),
-                  //     FlatButton(
-                  //       child: Text("Get location"),
-                  //
-                  //     ),
-                  //   ],
-                  // ),
+                   child: Text( "Hint :Current Temperature Of Your Location is " +temp+ "C"
 
-                  // child : RichText(
-                  //     text: TextSpan(
-                  //         text: 'Logg\n',
-                  //         children: _currentPosition == null
-                  //             ? [
-                  //           const TextSpan(text: 'Texjjjjjjjjjjjjjjjjjjjjjjjjjjjt1\n'),
-                  //           const TextSpan(text: 'Text2\n')
-                  //         ]
-                  //             : [
-                  //            TextSpan(text: "Sugg :Current Temperature Of Your Location is " + getTemperature(_currentPosition).toString() + "C"),
-                  //
-                  //         ]))
                 ),
-
-        //         Padding(
-        //           padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-        //           child:
-        //   Text(
-        //   "Latitude: ${_currentPosition.latitude} Longitude: ${_currentPosition.longitude}",
-        //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-        // ),
              ),
 
                 Padding(
@@ -397,17 +309,11 @@ class TodoDetailState extends State<SearchBest> {
                             'Search',
                             textScaleFactor: 1.5,
                           ),
-                          // onPressed: () {
-                          //   setState(() {
-                          //    // _save();
-                          //     _search();
-                          //   });
-                          // },
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         //form is valid, proceed further
                         print("done good");
-                        _search(); //save once fields are valid, onSaved method invoked for every form fields
+                        bestFitController.search(context,todo); //save once fields are valid, onSaved method invoked for every form fields
 
                       } else {
                         print("not done");
@@ -420,23 +326,6 @@ class TodoDetailState extends State<SearchBest> {
                       ),
 
                       Container(width: 5.0,),
-
-                      // Expanded(
-                      //   child: RaisedButton(
-                      //     color: Theme.of(context).primaryColorDark,
-                      //     textColor: Theme.of(context).primaryColorLight,
-                      //     child: Text(
-                      //       'Delete',
-                      //       textScaleFactor: 1.5,
-                      //     ),
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         debugPrint("Delete button clicked");
-                      //         _delete();
-                      //       });
-                      //     },
-                      //   ),
-                      // ),
 
                     ],
                   ),
@@ -451,10 +340,6 @@ class TodoDetailState extends State<SearchBest> {
 
 
 
-  }
-
-  void moveToLastScreen() {
-    Navigator.pop(context, true);
   }
 
 
@@ -480,102 +365,24 @@ class TodoDetailState extends State<SearchBest> {
 
 
   // Save data to database
-  void _save() async {
-
-    print("hiiiiiii all");
-    print(todo.maincrop);
-    print(todo.landscape);
-    print(todo.soil);
-    print(todo.rain);
-    print(todo.crop);
-    print(todo.title);
-    print(todo.description);
-    //moveToLastScreen();
-
-   //todo.date = DateFormat.yMMMd().format(DateTime.now());
-    //todo.title=int.parse(todo.title);
-    int result;
-    if (todo.id != null) {  // Case 1: Update operation
-      result = await helper.updateTodo(todo);
-    } else { // Case 2: Insert Operation
-      result = await helper.insertTodo(todo);
-    }
-
-    if (result != 0) {  // Success
-      _showAlertDialog('Status', 'Fair item Saved Successfully');
-    } else {  // Failure
-      _showAlertDialog('Status', 'Problem Saving Todo');
-    }
-
-  }
-
-  // Save data to database
-  void _search() async {
-
-    print("welcome to search"+todo.title.toString());
-
-    //moveToLastScreen();
-    //bool result=false;
-    //debugPrint("xddxxy"+knowtodo.id.toString());
-    //if (todo.id != null) {
-    print("aaaa");
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return BestFitListSearch(todo, "aaaaaa");
-    }));
-
-    //}else{
-    print("aass");
-    //}
-
-
-    // if (result == true) {
-    //   updateListView();
-    // }
-
-    print("hiiiiiii all");
-    print(todo.maincrop);
-    print(todo.landscape);
-    print(todo.soil);
-    print(todo.rain);
-    print(todo.crop);
-    print(todo.title);
-    print(todo.description);
-    //moveToLastScreen();
-
-    //todo.date = DateFormat.yMMMd().format(DateTime.now());
-    // int result;
-    // if (todo.id != null) {  // Case 1: Update operation
-    //   result = await helper.updateTodo(todo);
-    // } else { // Case 2: Insert Operation
-    //   result = await helper.insertTodo(todo);
-    // }
-    //
-    // if (result != 0) {  // Success
-    //   _showAlertDialog('Status', 'Fair item Saved Successfully');
-    // } else {  // Failure
-    //   _showAlertDialog('Status', 'Problem Saving Todo');
-    // }
-
-  }
-
-
-  void _delete() async {
-
-    moveToLastScreen();
-
-    if (todo.id == null) {
-      _showAlertDialog('Status', 'No Todo was deleted');
-      return;
-    }
-
-    int result = await helper.deleteTodo(todo.id);
-    if (result != 0) {
-      _showAlertDialog('Status', 'Fair item Deleted Successfully');
-    } else {
-      _showAlertDialog('Status', 'Error Occured while Deleting Todo');
-    }
-  }
+  // void _save() async {
+  //
+  //  //todo.date = DateFormat.yMMMd().format(DateTime.now());
+  //   //todo.title=int.parse(todo.title);
+  //   int result;
+  //   if (todo.id != null) {  // Case 1: Update operation
+  //     result = await helper.updateTodo(todo);
+  //   } else { // Case 2: Insert Operation
+  //     result = await helper.insertTodo(todo);
+  //   }
+  //
+  //   if (result != 0) {  // Success
+  //     _showAlertDialog('Status', 'Fair item Saved Successfully');
+  //   } else {  // Failure
+  //     _showAlertDialog('Status', 'Problem Saving Todo');
+  //   }
+  //
+  // }
 
   void _showAlertDialog(String title, String message) {
 
@@ -589,50 +396,14 @@ class TodoDetailState extends State<SearchBest> {
     );
   }
 
-  // fetchLocation() async {
-  //   bool _serviceEnabled;
-  //   PermissionStatus _permissionGranted;
-  //
-  //   _serviceEnabled = await location.serviceEnabled();
-  //   if (!_serviceEnabled) {
-  //     _serviceEnabled = await location.requestService();
-  //     if (!_serviceEnabled) {
-  //       return;
-  //     }
-  //   }
-  //
-  //   _permissionGranted = await location.hasPermission();
-  //   if (_permissionGranted == PermissionStatus.denied) {
-  //     _permissionGranted = await location.requestPermission();
-  //     if (_permissionGranted != PermissionStatus.granted) {
-  //       return;
-  //     }
-  //   }
-  //
-  //   _currentPosition = await location.getLocation();
-  //   location.onLocationChanged.listen((LocationData currentLocation) {
-  //     setState(() {
-  //       _currentPosition = currentLocation;
-  //       // getAddress(_currentPosition.latitude, _currentPosition.longitude)
-  //       //     .then((value) {
-  //       //   setState(() {
-  //       //     _address = "${value.first.addressLine}";
-  //       //   });
-  //       // });
-  //     });
-  //   });
-  // }
-
   getCurrentLocation() async {
+    print("here also");
     await Geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
         .then((Position position) {
-
+      print("back here");
       getTemperature(position);
-          //retrun position;
-      // setState(() {
-      //   _currentPosition = position;
-      // });
+
     }).catchError((e) {
       print(e);
     });
@@ -641,17 +412,15 @@ class TodoDetailState extends State<SearchBest> {
   Future<int> getTemperature(currentLocation) async{
 
     if(currentLocation==null){
-    print("null is location");
+    print("location null");
     }else{
-      print("rabadammn"+int.parse(currentLocation.latitude.round().toString()).toString());
-      var internetconnection = await isConnected();
+      print("not null");
+      var internetconnection = await bestFitController.isConnected();
       if(internetconnection==true) {
+        print("I connection is there");
         var lati=currentLocation.latitude.toString();
         var lani=currentLocation.longitude.toString();
-        print("here"+lati);
-        print("here"+lani);
         //DatabaseHelper helper = new DatabaseHelper();
-
         var decodedTemp = await networkHelper.getTemperature(lati,lani);
         print(temp);
         setState(() {
@@ -662,36 +431,8 @@ class TodoDetailState extends State<SearchBest> {
       }
       return int.parse(currentLocation.latitude.round().toString());
     }
-    //return int.parse(currentLocation.latitude.round().toString());
-    //return int.parse(currentLocation.latitude.toString());
-    //return 100;
-    //int.parse(currentLocation)
+
   }
 
-  Future<bool> isConnected() async {
-    try {
-      List<InternetAddress> result = await InternetAddress.lookup('google.com')
-          .timeout(Duration(seconds: 5));
-
-      //
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        return true;
-      }
-      //
-      else {
-        return false;
-      }
-    } on SocketException catch (_) {
-      return false;
-    }
-  }
-
-
-// Future<List<Address>> getAddress(double lat, double lang) async {
-  //   final coordinates = new Coordinates(latitude, longitude);
-  //   List<Address> address =
-  //   await Geocoder.local.findAddressesFromCoordinates(coordinates);
-  //   return address;
-  // }
 
 }

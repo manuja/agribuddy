@@ -14,7 +14,7 @@ class NetworkHelper {
       "last_id":count_updateme,
     };
 
-    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/ws.php'),
+    final response = await http.post(Uri.parse('http://192.168.1.101/backend_api/ws.php'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
         },
@@ -36,7 +36,7 @@ class NetworkHelper {
       "last_id":count_knowledgeup,
     };
 
-    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/knowledgeup_ws.php'),
+    final response = await http.post(Uri.parse('http://192.168.1.101/backend_api/knowledgeup_ws.php'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
         },
@@ -59,7 +59,7 @@ class NetworkHelper {
       "last_id":count_bestfit,
     };
 
-    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/bestfit_ws.php'),
+    final response = await http.post(Uri.parse('http://192.168.1.101/backend_api/bestfit_ws.php'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
         },
@@ -83,7 +83,7 @@ class NetworkHelper {
       "lan": lan.toString(),
     };
 
-    final response = await http.post(Uri.parse('http://192.168.1.100/backend_api/temparature_ws.php'),
+    final response = await http.post(Uri.parse('http://192.168.1.101/backend_api/temparature_ws.php'),
         headers: {
           HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded'
         },

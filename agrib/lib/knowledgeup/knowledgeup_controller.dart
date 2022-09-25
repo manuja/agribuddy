@@ -30,14 +30,14 @@ class KnowledgUpController{
     }
   }
 
-  void navigateToDetail(Knowledge knowtodo, String title,context) async {
+  void navigateToDetail(List<Knowledge> knowlist,Knowledge knowtodo, String title,context,String tag) async {
     //bool result=false;
-    debugPrint("xddxxy"+knowtodo.id.toString());
+    debugPrint("xddxxy"+knowlist.toString());
     //if (todo.id != null) {
     print("aaaa");
     bool result =
     await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return KnowledgeUpDetail(knowtodo, title);
+      return KnowledgeUpDetail(knowtodo, title,tag);
     }));
 
     //}else{

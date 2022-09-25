@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'bestfit.dart';
+import 'bestfit_detail.dart';
 import 'bestfitlistsearch.dart';
 
 
@@ -66,6 +67,17 @@ class BestFitController{
       }
     } on SocketException catch (_) {
       return false;
+    }
+  }
+
+  void navigateToDetailDescription(BestFit todo, String title, context,String flag) async {
+
+    bool result =
+    await Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return BestFitDetail(todo, title,flag);
+    }));
+    if (result == true) {
+      //updateListView();
     }
   }
 

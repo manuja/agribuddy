@@ -83,7 +83,7 @@ class BestFitListSearchState extends State<BestFitListSearch> {
               child: Text(getFirstLetter(this.todoList[position].maincrop.toString()),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            title: Text(this.todoList[position].crop.toString()+" - ",
+            title: Text(this.todoList[position].crop.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
             subtitle: Text((this.todoList[position].description.toString()).substring(0,15)+"....."),
             //subtitle: Text(this.todoList[position].description),
@@ -91,7 +91,8 @@ class BestFitListSearchState extends State<BestFitListSearch> {
               mainAxisSize: MainAxisSize.min,
             ),
             onTap: () {
-              bestFitController.navigateToDetail(this.todoList[position], 'Edit My Fair',context);
+              //bestFitController.navigateToDetail(this.todoList[position], 'Edit My Fair',context);
+              bestFitController.navigateToDetailDescription(this.todoList[position], 'Detail Description Of Best Fit',context,"2");
             },
           ),
         );

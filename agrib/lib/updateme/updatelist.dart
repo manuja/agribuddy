@@ -72,7 +72,7 @@ class UpdateListState extends State<UpdateList> {
             title: Text(this.updateList[position].title.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
             //subtitle: Text((this.updateList[position].date.toString()).toString()+' LKR'),
-            subtitle: Text(this.updateList[position].description,style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(this.updateList[position].description,style: TextStyle(fontWeight: FontWeight.normal)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[

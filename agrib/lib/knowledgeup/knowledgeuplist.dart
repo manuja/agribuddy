@@ -71,7 +71,7 @@ class KnowledgeupListState extends State<KnowledgeupList> {
         debugPrint("xxxy id"+this.knowledgeList[position].id.toString());
         debugPrint("xxxy ti"+this.knowledgeList[position].title.toString());
         debugPrint("xxxy des"+this.knowledgeList[position].description.toString());
-       // debugPrint("xxxy des2"+this.todoList[position].priority.toString());
+        debugPrint("xxxy au"+this.knowledgeList[position].author.toString());
         return Card(
           color: Colors.white,
           elevation: 2.0,
@@ -81,9 +81,11 @@ class KnowledgeupListState extends State<KnowledgeupList> {
               child: Text(getFirstLetter(this.knowledgeList[position].title.toString()),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            title: Text(this.knowledgeList[position].title.toString()+" by "+this.knowledgeList[position].author.toString(),
+            title: Text((this.knowledgeList[position].title.toString()),
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            //subtitle: Text((this.todoList[position].priority.toString()).toString()+' LKR'),
+            subtitle: Text("by "+this.knowledgeList[position].author.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold)
+            ),
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
@@ -98,7 +100,7 @@ class KnowledgeupListState extends State<KnowledgeupList> {
             ),
             onTap: () {
               debugPrint("ListTile Tapped");
-              knowledgeupController.navigateToDetail(this.knowledgeList[position], 'Article',context);
+              knowledgeupController.navigateToDetail(this.knowledgeList,this.knowledgeList[position], 'Article',context,"1");
             },
           ),
         );

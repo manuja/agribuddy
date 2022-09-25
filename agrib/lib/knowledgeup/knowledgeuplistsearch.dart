@@ -9,6 +9,8 @@ import 'package:agrib/common/database_helper.dart';
 import 'package:agrib/bestfit/searchbest.dart';
 import 'package:sqflite/sqflite.dart';
 
+import 'knowledgeup_controller.dart';
+
 class KnowledgeupListSearch extends StatefulWidget {
 
   final String appBarTitle;
@@ -29,6 +31,7 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
   //print("serious"+knowledgeList[0].);
   DatabaseHelper databaseHelper = DatabaseHelper();
   RouteCommon routeController= new RouteCommon();
+  KnowledgUpController knowledgeupController=new KnowledgUpController();
   List<Knowledge> knowledgeList;
   Knowledge todoknowledge;
   String appBarTitle;
@@ -94,8 +97,11 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
               child: Text(getFirstLetter(this.knowledgeList[position].title.toString()),
                   style: TextStyle(fontWeight: FontWeight.bold)),
             ),
-            title: Text(this.knowledgeList[position].title.toString()+" by " + this.knowledgeList[position].author.toString(),
+            title: Text(this.knowledgeList[position].title.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text("by "+this.knowledgeList[position].author.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold)
+            ),
             //subtitle: Text((this.todoList[position].priority.toString()).toString()+' LKR'),
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
@@ -111,7 +117,7 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
             ),
             onTap: () {
               debugPrint("ListTile here Tapped");
-              navigateToDetail(this.knowledgeList[position], 'Detail Description');
+              knowledgeupController.navigateToDetail(this.knowledgeList,this.knowledgeList[position], 'Article',context,"2");
             },
           ),
         );
@@ -156,25 +162,6 @@ class KnowledgeupListSearchState extends State<KnowledgeupListSearch> {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
-  void navigateToDetail(Knowledge knowtodo, String title) async {
-    //bool result=false;
-    debugPrint("xddxxy"+knowtodo.id.toString());
-    //if (todo.id != null) {
-    print("aaaa");
-    bool result =
-    await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return KnowledgeUpDetail(knowtodo, title);
-    }));
-
-    //}else{
-    print("aass");
-    //}
-
-
-    if (result == true) {
-      updateListView();
-    }
-  }
 
   void updateListView() {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();

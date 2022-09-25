@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:agrib/bestfit/bestfit.dart';
 import 'package:agrib/common/database_helper.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'bestfitlistsearch.dart';
 
@@ -16,6 +17,7 @@ class SearchBest extends StatefulWidget {
 
 
   SearchBest(this.todo, this.appBarTitle);
+
 
   @override
   State<StatefulWidget> createState() {
@@ -46,6 +48,8 @@ class TodoDetailState extends State<SearchBest> {
   TextEditingController descriptionController = TextEditingController();
 
   TodoDetailState(this.todo, this.appBarTitle);
+
+
 
   @override
   void initState() {
@@ -396,16 +400,16 @@ class TodoDetailState extends State<SearchBest> {
     );
   }
 
-  getCurrentLocation() async {
+  void getCurrentLocation() async {
     print("here also");
     await Geolocator
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.best, forceAndroidLocationManager: true)
         .then((Position position) {
-      print("back here");
+      print("back here"+position.toString());
       getTemperature(position);
 
     }).catchError((e) {
-      print(e);
+      print("is error"+e.toString());
     });
   }
 

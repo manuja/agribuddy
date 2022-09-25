@@ -170,7 +170,7 @@ class KnowledgeUpDetailState extends State<KnowledgeUp> {
                       updateTitle();
                     },
                     decoration: InputDecoration(
-                        labelText: 'Search',
+                        labelText: 'Search Key Word',
                         labelStyle: textStyle,
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0)

@@ -79,13 +79,14 @@ class BestFitListState extends State<BestFitList> {
             ),
             title: Text(this.todoList[position].crop.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text((this.todoList[position].description.toString()).substring(0,15)+"....."),
+            subtitle: Text((this.todoList[position].description.toString()).substring(0,30)+"....."),
             //subtitle: Text(this.todoList[position].description),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
             ),
             onTap: () {
-              bestFitController.navigateToDetail(this.todoList[position], 'Edit My List',context);
+
+              bestFitController.navigateToDetailDescription(this.todoList[position], 'Detail Description Of Best Fit',context,"1");
             },
           ),
         );
